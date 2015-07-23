@@ -9,7 +9,7 @@
 class TCPStream
 {
         int m_socketDescriptor;
-        string m_peerIP;
+        std::string m_peerIP;
         int m_peerPort;
 
     public:
@@ -19,12 +19,14 @@ class TCPStream
 
         ~TCPStream();
 
-        std::ssize_t send(char* buffer, std::size_t len);
-        std::ssize_t receive(char* buffer, std::size_t len);
+        ssize_t send(char* buffer, std::size_t len);
+        ssize_t receive(char* buffer, std::size_t len);
 
-        string getPeerIP();
+        std::string getPeerIP();
         int getPeerPort();
     
     private:
-
+        TCPStream();
+        TCPStream(int socketDescriptor, struct sockaddr_in* address);
+        TCPStream(const TCPStream& stream);
 };
