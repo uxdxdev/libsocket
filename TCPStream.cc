@@ -8,8 +8,23 @@
 
 class TCPStream
 {
-				int m_socketDescriptor;
-				string m_peerIP;
-				int m_peerPort;
+        int m_socketDescriptor;
+        string m_peerIP;
+        int m_peerPort;
+
+    public:
+
+        friend class TCPAccepter;
+        friend class TCPConnector;
+
+        ~TCPStream();
+
+        std::ssize_t send(char* buffer, std::size_t len);
+        std::ssize_t receive(char* buffer, std::size_t len);
+
+        string getPeerIP();
+        int getPeerPort();
+    
+    private:
 
 };
