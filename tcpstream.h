@@ -1,5 +1,7 @@
 // TCPStream.cc : David Morton
 // Description: TCPStream class to handle network I/O
+#ifndef TCPSTREAM_H_
+#define TCPSTREAM_H_
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -30,3 +32,5 @@ class TCPStream
         TCPStream(int socketDescriptor, struct sockaddr_in* address);
         TCPStream(const TCPStream& stream);
 };
+
+#endif
