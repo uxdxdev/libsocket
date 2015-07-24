@@ -1,7 +1,7 @@
 
 CC=g++
 CFLAGS=-g -c -Wall
-SOURCES=tcpstream.cc 
+SOURCES=tcpstream.cc
 
 all:
-	$(CC) $(CFLAGS) $(SOURCES) -o client
+	$(CC) $(CFLAGS) $(SOURCES) -o build/client

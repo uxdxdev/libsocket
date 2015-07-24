@@ -16,8 +16,8 @@ class TCPStream
 
     public:
 
-        friend class TCPAccepter;
-        friend class TCPConnector;
+        //friend class TCPAccepter;
+        //friend class TCPConnector;
 
         ~TCPStream();
 
