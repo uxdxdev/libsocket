@@ -17,7 +17,7 @@ bool Socket::init()
     return true;
 }
 
-bool Socket::open(unsigned int port)
+bool Socket::open(unsigned short port)
 {
     m_iSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
@@ -30,11 +30,12 @@ bool Socket::open(unsigned int port)
     sockaddr_in address;
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons( (unsigned int) port );
+    address.sin_port = htons( (unsigned short) port );
 
-    if( bind( m_iSocket, (const sockaddr*) &address, sizeof(sockaddr_in) < 0 ) )
+    if( bind( m_iSocket, (const sockaddr*) &address, sizeof(sockaddr_in) ) < 0 )
     {
         std::cout << "error: failed to bind socket to port" << std::endl;
+        closeSocket();
         return false;
     }
 
@@ -57,12 +58,33 @@ void Socket::closeSocket()
     close( m_iSocket );
 }
 
-int Socket::send(const Address& to, const char* data, int size)
+bool Socket::send(const Address& to, const char* data, int size)
 {
-    return 0;
+    sockaddr_in address;
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = htonl( to.getAddress());
+    address.sin_port = htons( (unsigned short) to.getPort());
+
+    std::cout << "Sending: " << data << std::endl;
+
+    int sent = sendto( m_iSocket, (const char*) data, size, 0, (sockaddr*)& to, sizeof( sockaddr_in ) );
+    
+    return (sent == size) ? true : false;
 }
 
-int Socket::receive()
+int Socket::receive( Address& receivedFrom, void* data, int size )
 {
-    return 0;
+    sockaddr_in from;
+    socklen_t fromLength = sizeof( from );
+
+    int received_bytes = recvfrom( m_iSocket, (char*) data, size, 0, (sockaddr*)&from, &fromLength );
+
+    std::cout << "Received: " << data << std::endl;
+
+    unsigned int address = ntohl( from.sin_addr.s_addr );
+    unsigned short port = ntohs( from.sin_port );
+
+    receivedFrom = Address( address, port);
+
+    return received_bytes;
 }
