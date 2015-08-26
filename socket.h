@@ -44,7 +44,8 @@ class Address{
         std::string getInfo() const
         {
             char address[INET_ADDRSTRLEN];
-            inet_ntop(AF_INET, &m_iAddress, address, INET_ADDRSTRLEN );
+            int socketAddress = htonl(m_iAddress);
+            inet_ntop(AF_INET, &socketAddress, address, INET_ADDRSTRLEN );
             return address;
         }
         

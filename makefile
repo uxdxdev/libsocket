@@ -1,7 +1,8 @@
 
-CC=g++
-CFLAGS=-g -c -Wall
-SOURCES=tcpstream.cc
+CC = g++
+CFLAGS = -Wall
+SOURCES = socket.cpp test.cpp
+OUTPUT = Test
 
 all:
-	$(CC) $(CFLAGS) $(SOURCES) -o build/client
+	$(CC) $(CFLAGS) $(SOURCES) -o $(OUTPUT)

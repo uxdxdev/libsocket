@@ -21,13 +21,16 @@ int main()
     while(true)
     {
         const char data[] = "This is a string of text";
+        char destinationIP[] = "127.0.0.1"; // TODO: implement receving IP from cmd line
 
-        bool sent = socket.sendPacket( Address("127.0.0.1", port), data, sizeof(data) );
+        bool sent = socket.sendPacket( Address(destinationIP, port), data, sizeof(data) );
 
         if( !sent )
         {
             std::cout << "error: packet not sent" << std::endl;
         }
+
+        std::cout << "Packet Sent => " << destinationIP << ":" << port << " [" << data << "]" << std::endl;
 
         while(true)
         {
@@ -42,7 +45,7 @@ int main()
                 break;
             }
 
-            std::cout << "Buffer: " << buffer << std::endl;
+            std::cout << "Packet Recv <= " << sender.getInfo() << ":" << sender.getPort() << " [" << buffer << "]" << std::endl;
 
         }
     
