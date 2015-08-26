@@ -7,10 +7,15 @@ void wait( float seconds )
     usleep( (int) ( seconds * 1000000.0f ) );
 }
 
-int main()
+int main( int argc, char* argv[] )
 {
     Socket socket;
-    int port = 30000;
+    int port = 30000; // default port
+
+    if( argc == 2)
+    {
+        port = atoi(argv[1]);
+    }
 
     if( !socket.open( port ) )
     {
