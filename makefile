@@ -1,9 +1,8 @@
 
 CC = g++
 CFLAGS = -Wall
-SOURCES = socket.cpp test.cpp
-BUILD_DIR = build
-OUTPUT = UDPNode
+SOURCE_FILES = src/socket.cpp src/node.cpp
+OUTPUT = bin/UDPNode
 
 all:
-	$(CC) $(CFLAGS) $(SOURCES) -o $(BUILD_DIR)/$(OUTPUT)
+	$(CC) $(CFLAGS) $(SOURCE_FILES) -o $(OUTPUT)
