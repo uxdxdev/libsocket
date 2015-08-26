@@ -10,7 +10,7 @@ void wait( float seconds )
 int main()
 {
     Socket socket;
-    int port = 3001;
+    int port = 30000;
 
     if( !socket.open( port ) )
     {
@@ -20,25 +20,33 @@ int main()
 
     while(true)
     {
-        const char data[] = "This is a string of text from the client using UDP";
+        const char data[] = "This is a string of text";
 
-        socket.send( Address("127.0.0.1", port), data, sizeof(data) );
+        bool sent = socket.sendPacket( Address("127.0.0.1", port), data, sizeof(data) );
+
+        if( !sent )
+        {
+            std::cout << "error: packet not sent" << std::endl;
+        }
 
         while(true)
         {
             Address sender;
-            unsigned char buffer[256];
-            int bytes_read = socket.receive(sender, buffer, sizeof( buffer ));
+            
+            unsigned char buffer[512];
 
-            if( !bytes_read )
+            int received_bytes = socket.receivePacket( sender, buffer, sizeof(buffer) );
+
+            if( received_bytes <= 0 )
             {
                 break;
             }
-            std::cout << "Received packet from " << sender.getInfo() << " on port " << sender.getPort() << " bytes received " << bytes_read << " buffer: " << buffer << std::endl;
 
-    }
+            std::cout << "Buffer: " << buffer << std::endl;
+
+        }
     
-    wait(1.0f);    
+        wait(.25f);    
     }
     
     return 0;
