@@ -1,3 +1,7 @@
+/*
+ * connection.cpp
+ */
+
 #include "connection.h"
 
 Connection::Connection(unsigned int protocolKey, float timeout)

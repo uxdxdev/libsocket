@@ -1,3 +1,7 @@
+/*
+ * socket.h
+ */
+
 #ifndef SOCKET_H_
 #define SOCKET_H_
 
@@ -6,6 +10,11 @@
 #include <unistd.h>
 #include <arpa/inet.h> // inet_addr
 #include <string.h>
+
+inline void wait( float seconds )
+{
+    usleep( (int) ( seconds * 1000000.0f ) );
+}
 
 class Address{
     private:
@@ -79,13 +88,11 @@ class Connection{
     protected:
         void resetConnection();
     public:
-
         enum Mode{
             NONE,
             CLIENT,
             SERVER
         };
-
         Connection(unsigned int protocolKey, float timeout);
         ~Connection();
         bool startConnection(int port);
@@ -112,7 +119,7 @@ class Connection{
         float m_fTimeout; // time until disconnect
         Socket m_socket; 
         bool m_bRunning;
-        Mode m_eMode;
+        Mode m_eMode; // connection mode {client, server}
         State m_eState;
         float m_fTimeoutIncreaseAmount;
         Address m_Address;
