@@ -1,7 +1,7 @@
 
 CC = g++
 CFLAGS = -Wall
-SOURCE_FILES = src/socket.cpp src/node.cpp
+SOURCE_FILES = socket.cpp node.cpp
 OUTPUT = bin/UDPNode
 
 all:
