@@ -35,7 +35,7 @@ int main( int argc, char* argv[] )
             std::cout << "error: packet not sent" << std::endl;
         }
 
-        std::cout << "Packet Sent => " << destinationIP << ":" << port << " [" << data << "]" << std::endl;
+        std::cout << "Packet Sent to " << destinationIP << ":" << port << " [" << data << "]" << std::endl;
 
         while(true)
         {
@@ -50,7 +50,7 @@ int main( int argc, char* argv[] )
                 break;
             }
 
-            std::cout << "Packet Recv <= " << sender.getInfo() << ":" << sender.getPort() << " [" << buffer << "]" << std::endl;
+            std::cout << "Packet Recv from " << sender.getInfo() << ":" << sender.getPort() << " [" << buffer << "]" << std::endl;
 
         }
     

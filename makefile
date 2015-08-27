@@ -2,7 +2,7 @@
 CC = g++
 CFLAGS = -Wall
 SOURCE_FILES = socket.cpp node.cpp
-OUTPUT = bin/UDPNode
+EXECUTABLE = node
 
 all:
-	$(CC) $(CFLAGS) $(SOURCE_FILES) -o $(OUTPUT)
+	$(CC) $(CFLAGS) $(SOURCE_FILES) -o bin/$(EXECUTABLE)
