@@ -1,7 +1,7 @@
 
 CC = g++
 CFLAGS = -Wall
-SOURCE_FILES = socket.cpp node.cpp
+SOURCE_FILES = socket.cpp connection.cpp server.cpp
 EXECUTABLE = node
 
 all:

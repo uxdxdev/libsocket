@@ -2,57 +2,58 @@
  * server.cpp
  */
 
-#include <iostream>
 #include "socket.h"
+#include <iostream>
 
 int main( int argc, char* argv[] )
 {
     Socket socket;
     int port = 30000; // default port
+    int protocolKey = 0x20150827;
+    float timeoutSecs = 5.0f;
+    float deltaTime = 0.25f;
 
     if( argc == 2)
     {
         port = atoi(argv[1]);
     }
 
-    if( !socket.open( port ) )
+    Connection connection(protocolKey, timeoutSecs);
+
+    if( connection.startConnection( port ) == 0 )
     {
-        std::cout << "error: failed to create socket" << std::endl;
+        std::cout << "error: could not start the server on port " << port << std::endl;
         return 1;
     }
 
+    connection.listen(); // set server to listen mode
+
     while(true)
     {
-        const char data[] = "This is a string of text";
-        char destinationIP[] = "127.0.0.1"; // TODO: implement receving IP from cmd line
-
-        bool sent = socket.sendPacket( Address(destinationIP, port), data, sizeof(data) );
-
-        if( !sent )
+        if( connection.isConnected() )
         {
-            std::cout << "error: packet not sent" << std::endl;
+            char packet[] = "sending packet from server to the client";
+            connection.sendPacket(packet, sizeof( packet ));
         }
-
-        std::cout << "Packet Sent to " << destinationIP << ":" << port << " [" << data << "]" << std::endl;
 
         while(true)
         {
-            Address sender;
-            
-            unsigned char buffer[512];
+            char buffer[512];
 
-            int received_bytes = socket.receivePacket( sender, buffer, sizeof(buffer) );
+            int received_bytes = connection.receivePacket( buffer, sizeof(buffer) );
 
             if( received_bytes <= 0 )
             {
+                //std::cout << "error: no bytes received" << std::endl;  
                 break;
             }
 
-            std::cout << "Packet Recv from " << sender.getInfo() << ":" << sender.getPort() << " [" << buffer << "]" << std::endl;
+            std::cout << "receied packet: [" << buffer << "]" << std::endl;  
 
         }
-    
-        wait(.25f);    
+        
+        connection.updateConnection(deltaTime); 
+        wait(deltaTime);    
     }
     
     return 0;

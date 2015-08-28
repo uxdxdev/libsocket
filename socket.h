@@ -9,7 +9,7 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <arpa/inet.h> // inet_addr
-#include <string.h>
+#include <string>
 
 inline void wait( float seconds )
 {
@@ -117,7 +117,7 @@ class Connection{
         };
         unsigned int m_uiProtocolKey; // shared key between client and server
         float m_fTimeout; // time until disconnect
-        Socket m_socket; 
+        Socket m_Socket; 
         bool m_bRunning;
         Mode m_eMode; // connection mode {client, server}
         State m_eState;
