@@ -1,17 +1,12 @@
 
 CC = g++
-CFLAGS = -g -Wall
+CFLAGS = -Wall -DDEBUG
+SOURCE_FILES = socket.cpp connection.cpp
 
 % : %.cpp socket.h
-	$(CC) $< -o $@ ${flags}
+	$(CC) $< $(SOURCE_FILES) $(CFLAGS) -o bin/$@
 
-all: node server
-
-node: node
-	./bin/node
-
-server: server
-	./bin/server
+all : node server
 
 clean:
 	rm -f node server

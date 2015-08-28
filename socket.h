@@ -28,7 +28,7 @@ class Address{
         }
 
         Address(std::string address, unsigned short port)
-        { 
+        {
             int socketAddress = inet_addr(address.c_str()); // convert string to network address
             this->m_iAddress = htonl(socketAddress); // convert to big endian
             this->m_sPort = port;
@@ -57,8 +57,8 @@ class Address{
             inet_ntop(AF_INET, &socketAddress, address, INET_ADDRSTRLEN );
             return address;
         }
-        
-        bool operator == (const Address& other) const 
+
+        bool operator == (const Address& other) const
         {
             return this->m_iAddress == other.m_iAddress && this->m_sPort == other.m_sPort;
         }
@@ -67,7 +67,6 @@ class Address{
         {
             return ! (*this == other);
         }
-
 };
 
 class Socket{
@@ -117,7 +116,7 @@ class Connection{
         };
         unsigned int m_uiProtocolKey; // shared key between client and server
         float m_fTimeout; // time until disconnect
-        Socket m_Socket; 
+        Socket m_Socket;
         bool m_bRunning;
         Mode m_eMode; // connection mode {client, server}
         State m_eState;
