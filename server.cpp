@@ -9,7 +9,7 @@ int main( int argc, char* argv[] )
 {
     Socket socket;
     int port = 30000; // default port
-    int protocolKey = 0x20150827;
+    int protocolKey = 0x99887766;
     float timeoutSecs = 5.0f;
     float deltaTime = 0.25f;
 
@@ -44,17 +44,17 @@ int main( int argc, char* argv[] )
 
             if( received_bytes <= 0 )
             {
-                //std::cout << "error: no bytes received" << std::endl;  
+                //std::cout << "error: no bytes received" << std::endl;
                 break;
             }
 
-            std::cout << "receied packet: [" << buffer << "]" << std::endl;  
+            std::cout << "receied packet: [" << buffer << "]" << std::endl;
 
         }
-        
-        connection.updateConnection(deltaTime); 
-        wait(deltaTime);    
+
+        connection.updateConnection(deltaTime);
+        wait(deltaTime);
     }
-    
+
     return 0;
 }

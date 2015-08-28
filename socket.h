@@ -121,7 +121,7 @@ class Connection{
         bool m_bRunning;
         Mode m_eMode; // connection mode {client, server}
         State m_eState;
-        float m_fTimeoutIncreaseAmount;
+        float m_fTimer;
         Address m_Address;
 };
 #endif

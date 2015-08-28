@@ -22,7 +22,7 @@ Connection::~Connection()
 void Connection::resetConnection()
 {
     m_eState = DISCONNECTED;
-    m_fTimeoutIncreaseAmount = 0.0f;
+    m_fTimer = 0.0f;
     m_Address = Address(); // new empty address
 }
 
@@ -101,6 +101,13 @@ Connection::Mode Connection::getMode() const
 
 void Connection::updateConnection(float deltaTime)
 {
+    m_fTimer += deltaTime;
+    if( m_fTimer > m_fTimeout )
+    {
+        resetConnection();
+        m_eState = CONNECTION_FAILED;
+        std::cout << "connection timed out" << std::endl;
+    }
 }
 
 bool Connection::sendPacket(const char* data, int size)

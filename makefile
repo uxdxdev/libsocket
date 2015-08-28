@@ -1,8 +1,17 @@
 
 CC = g++
-CFLAGS = -Wall
-SOURCE_FILES = socket.cpp connection.cpp server.cpp
-EXECUTABLE = node
+CFLAGS = -g -Wall
 
-all:
-	$(CC) $(CFLAGS) $(SOURCE_FILES) -o bin/$(EXECUTABLE)
+% : %.cpp socket.h
+	$(CC) $< -o $@ ${flags}
+
+all: node server
+
+node: node
+	./bin/node
+
+server: server
+	./bin/server
+
+clean:
+	rm -f node server
