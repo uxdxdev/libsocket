@@ -4,6 +4,7 @@
 
 #include "socket.h"
 #include <iostream>
+#include <sstream>
 
 int main( int argc, char* argv[] )
 {
@@ -12,10 +13,13 @@ int main( int argc, char* argv[] )
     int protocolKey = 0x99887766;
     float timeoutSecs = 5.0f;
     float deltaTime = 0.25f;
+    std::stringstream ss;
 
     if( argc == 2)
     {
-        port = atoi(argv[1]);
+        ss << argv[1];
+        ss >> port;
+        ss.clear();
     }
 
     Connection connection(protocolKey, timeoutSecs);

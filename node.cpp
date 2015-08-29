@@ -1,15 +1,19 @@
 
 #include <iostream>
 #include "socket.h"
+#include <sstream>
 
 int main( int argc, char* argv[] )
 {
     Socket socket;
     int port = 30000; // default port
+    std::stringstream ss;
 
     if( argc == 2)
     {
-        port = atoi(argv[1]);
+        ss << argv[1];
+        ss >> port;
+        ss.clear();
     }
 
     if( !socket.open( port ) )

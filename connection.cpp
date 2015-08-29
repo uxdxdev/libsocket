@@ -3,6 +3,7 @@
  */
 
 #include "socket.h"
+#include <stdio.h>
 #include <iostream>
 
 Connection::Connection(unsigned int protocolKey, float timeout)
