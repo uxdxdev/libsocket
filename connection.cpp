@@ -5,6 +5,7 @@
 #include "socket.h"
 #include <stdio.h>
 #include <iostream>
+#include <cstring>
 
 Connection::Connection(unsigned int protocolKey, float timeout)
 {
@@ -110,23 +111,36 @@ void Connection::updateConnection(float deltaTime)
     m_fTimer += deltaTime;
     if( m_fTimer > m_fTimeout )
     {
-        resetConnection();
-        m_eState = CONNECTION_FAILED;
-        std::cout << "connection timed out" << std::endl;
+        if( m_eState == CONNECTING )
+        {
+            resetConnection();
+            m_eState = CONNECTION_FAILED;
+            std::cout << "connection timed out" << std::endl;
+        }
+        else if( m_eState == CONNECTED )    
+        {
+            resetConnection();
+            if( m_eState == CONNECTING )
+            {
+                m_eState = CONNECTION_FAILED;
+            }
+            std::cout << "connection timed out" << std::endl;
+        }
     }
 }
 
 bool Connection::sendPacket(const char* data, int size)
 {
-    char packet[size + 4]; // size + sizeof( m_uiProtocolKey )
+    char packet[4 + size]; // size + sizeof( m_uiProtocolKey )
+    
     packet[0] = (char) ( (m_uiProtocolKey >> 24) & 0xFF );
     packet[1] = (char) ( (m_uiProtocolKey >> 16) & 0xFF );
     packet[2] = (char) ( (m_uiProtocolKey >> 8) & 0xFF );
     packet[3] = (char) ( m_uiProtocolKey & 0xFF );
 
-    snprintf(packet, sizeof(packet), "%s", data);
-    
-    std::cout << "sendPacket(): packet: " << packet << std::endl;
+    //snprintf(packet, sizeof(packet), "%s%s", data);
+    std::strncat(packet, data, size);
+    //std::cout << "sendPacket(): packet: " << packet << std::endl;
 
     return m_Socket.sendPacket(m_Address, packet, sizeof(packet));
 }

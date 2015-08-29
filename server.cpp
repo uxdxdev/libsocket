@@ -36,7 +36,7 @@ int main( int argc, char* argv[] )
     {
         if( connection.isConnected() )
         {
-            char packet[] = "sending packet from server to the client";
+            char packet[] = "server to client packet";
             connection.sendPacket(packet, sizeof( packet ));
         }
 
