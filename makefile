@@ -6,7 +6,7 @@ SOURCE_FILES = address.cpp socket.cpp connection.cpp
 % : %.cpp socket.h
 	$(CC) $< $(SOURCE_FILES) $(CFLAGS) -o $@
 
-all : node server
+all : node server client
 
 clean:
-	rm -f node server
+	rm -f node server client

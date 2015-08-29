@@ -56,6 +56,11 @@ void Connection::listen()
 
 void Connection::connect(const Address& address)
 {
+    std::cout << "client connecting to " << address.getInfo() << ":" << address.getPort() << std::endl;
+    resetConnection();
+    m_eMode = CLIENT;
+    m_eState = CONNECTING;
+    m_Address = address;
 }
 
 bool Connection::isConnecting() const
