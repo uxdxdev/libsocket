@@ -47,12 +47,9 @@ int main( int argc, char* argv[] )
             break;
         }
 
-        if( connection.isConnected() )
-        {
-            // send packets
-            char packet[] = "client to server packet";
-            connection.sendPacket(packet, sizeof(packet));
-        }
+        // send packets
+        char packet[] = "client to server packet";
+        connection.sendPacket(packet, sizeof(packet));
 
         while( true )
         {

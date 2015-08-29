@@ -51,7 +51,7 @@ int main( int argc, char* argv[] )
                 break;
             }
 
-            std::cout << "receied packet: [" << buffer << "]" << std::endl;  
+            std::cout << "received packet: [" << buffer << "]" << std::endl;  
 
         }
         
