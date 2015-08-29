@@ -1,13 +1,7 @@
-# libsocket network library
+# libsocket network library 
 
-1. Run the setup.sh script to setup the directories
-2. Use 'make' to build the project
+The aim of the libsocket library is to create a foundation for network communication using the UDP protocol with customized layers for flow control, security, encryption, and reliablity. The immediate goal of this project is to enable its use in multiplayer game programming. 
 
-# Using the UDPNode
-
-Execute the node with an optional port number
-
-./UDPNode 30001
-
+1. Run the 'make' command. This will create the binaries for each test/implementation
 
 
