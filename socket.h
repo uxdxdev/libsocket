@@ -77,7 +77,7 @@ class Connection{
             CONNECTED
         };
         unsigned int m_uiProtocolKey; // shared key between client and server
-        float m_fTimeout; // time until disconnect
+        float m_fTimeoutLimit; // time until disconnect
         Socket m_Socket;
         bool m_bRunning;
         Mode m_eMode; // connection mode {client, server}
