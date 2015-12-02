@@ -1,88 +1,75 @@
-/*
- * socket.h
- */
+//
+// socket.h
+//
+// Author David Morton
+//
+// Description: libsocket is a network library used to handle TCP/UDP Client/Server communications.
+//
+#ifndef INCLUDES_SOCKETS_H_
+#define INCLUDES_SOCKETS_H_
 
-#ifndef SOCKET_H_
-#define SOCKET_H_
-
+#include <stdio.h> // perror()
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <unistd.h>
-#include <arpa/inet.h> // inet_addr
-#include <string>
+#include <netdb.h>
+#include <stdlib.h> // exit(),
+#include <unistd.h> // read(), write(), fork()
+#include <signal.h>
+#include <errno.h>
 
-inline void wait( float seconds )
-{
-    usleep( (int) ( seconds * 1000000.0f ) );
-}
+// Max buffer size used for the read buffer of file descriptors
+#define MAX_BUF_SIZE 4096
+#define MAX_LISTEN_QUEUE_SIZE 1024
 
-class Address{
-    private:
-        unsigned int m_iAddress;
-        unsigned short m_sPort;
-    public:
-        Address();
-        Address(std::string address, unsigned short port);
-        Address(unsigned int address, unsigned short port);
-        unsigned long getAddress() const;
-        unsigned short getPort() const;
-        std::string getInfo() const;
-        bool operator == (const Address& other) const;
-        bool operator != (const Address& other) const;
+// Used to store addressing information and populated
+// by the Address() wrapper function.
+struct Address{
+	struct sockaddr_in m_sAddress; // Address assembled here
+	struct hostent * m_sHost_info; // Host information
+	struct sockaddr_storage sender;
+	socklen_t sendsize;
 };
 
-class Socket{
-    private:
-        int m_iSocket;
-    public:
-        Socket();
-        ~Socket();
-        bool init();
-        bool open(unsigned short port);
-        bool isOpen() const;
-        void closeSocket();
-        bool sendPacket( const Address& to, const void * data, int size );
-        int receivePacket( Address & sender, void * data, int size );
+enum eAppType{
+	TYPE_CLIENT,
+	TYPE_SERVER
 };
 
-class Connection{
-    protected:
-        void resetConnection();
-    public:
-        enum Mode{
-            NONE,
-            CLIENT,
-            SERVER
-        };
-        Connection(unsigned int protocolKey, float timeout);
-        ~Connection();
-        bool startConnection(int port);
-        void stopConnection();
-        void listen(); // server
-        void connect(const Address& address); // client
-        bool isConnecting() const;
-        bool isConnected() const;
-        bool isListening() const;
-        bool connectionFailed() const;
-        Mode getMode() const;
-        void updateConnection(float deltaTime);
-        bool sendPacket(const char* data, int size);
-        int receivePacket(char* buffer, int size);
-    private:
-        enum State{
-            DISCONNECTED,
-            LISTENING,
-            CONNECTING,
-            CONNECTION_FAILED,
-            CONNECTED
-        };
-        unsigned int m_uiProtocolKey; // shared key between client and server
-        float m_fTimeoutLimit; // time until disconnect
-        Socket m_Socket;
-        bool m_bRunning;
-        Mode m_eMode; // connection mode {client, server}
-        State m_eState;
-        float m_fTimer;
-        Address m_Address;
-};
-#endif
+// Socket() creates a socket based on the family, type,
+// and protocol parameters passed in. Errors are also handled
+// if the call to socket fails.
+int Socket(int family, int type, int protocol);
+
+// Populates an Address object with information relative to the ipAddress given as a parameter.
+// The port number and address family are also set in the Address object.
+void Address(int family, struct Address* address, char* ipAddress, int portNumber);
+
+// Facilitates IPv4 and IPv6 addressing compatibility and handles any errors that may occur.
+int Connection(char *address, char *service, int type /* Client or Server */, int protocol /* UDP or TCP */);
+
+// Attempts to connect to the peer address, on success will write to the socket file descriptor passed
+// in as a parameter. Connect will also handle any errors that occur during the connection attempt.
+void Connect(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize);
+
+// Select wraps the select function call and handles any errors that may occur.
+// The Select wrapper function needs the max number of file descriptors,
+// the read set of descriptors, the write set, and the time interval to wait before
+// returning from the function. Select will multiplex I/O from many s
+int Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptorSet, fd_set *writeFileDescriptorSet, fd_set *exceptFileDescriptorSet, struct timeval *timeout);
+
+// Read
+ssize_t Read(int fileDescriptor, void *buffer, size_t numberOfBytes);
+void Write(int fileDescriptor, void *buffer, size_t numberOfBytes);
+void Shutdown(int fileDescriptor, int shutdownOption);
+int Max(int x, int y);
+void SignalHandler(int signalNumber);
+void Signal(int signalNumber, void* signalHandler);
+void Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize);
+void Listen(int socketFileDescriptor, int maxListenQSize);
+void MultiplexIO(FILE* fp, int socketFileDescriptor);
+int Send(int socketFileDescriptor, char *message, size_t size, int flags);
+int SendTo(int socketFileDescriptor, char *message, size_t size, int flags, struct sockaddr *sender, socklen_t sendsize);
+int ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int flags , struct sockaddr *sender, socklen_t *sendsize);
+
+#endif /* INCLUDES_SOCKETS_H_ */
