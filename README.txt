@@ -1,14 +1,7 @@
-libsocket
----------
-
-Network library
-
 Build
------
+——
 
-cd libsocket
-mkdir build
-cd build 
-cmake ..
+cmake CMakeLists.txt
 make
-make install
+
+libsocket can be found in the lib folder

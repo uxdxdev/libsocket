@@ -6,13 +6,10 @@ set(CMAKE_MACOSX_RPATH 1)
 set(CMAKE_BUILD_TYPE Release)
 
 # Build the library into the lib folder
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 # Set library source files
 set(SOURCES src/socket.c)
 
 # Create shared library
 add_library(socket SHARED ${SOURCES})
-
-# Install the library on the system
-install(TARGETS socket)
