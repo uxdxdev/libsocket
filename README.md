@@ -1,10 +1,10 @@
 # Build
 
-cd libsocket
+'cd libsocket
 mkdir build
 cd build
 cmake ..
 make
-make install
+make install/
 
 
