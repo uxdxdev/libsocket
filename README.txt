@@ -1,7 +1,10 @@
-# libsocket
+libsocket
+---------
+
 Network library
 
-# Build
+Build
+-----
 
 cd libsocket
 mkdir build
