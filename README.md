@@ -5,11 +5,11 @@ Libsocket is a wrapper library around BSD Sockets allowing simple socket creatio
 ## Build
 
 ```
-mkdir build
-cd build
-cmake ..
-make
-make install
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+$ make install
 ```
 
 # Use cases
