@@ -1,7 +1,8 @@
 Build
 ——
 
-cmake CMakeLists.txt
+mkdir build
+cd build
+cmake ..
 make
-
-libsocket can be found in the lib folder
+make install
