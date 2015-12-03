@@ -5,7 +5,7 @@
 //
 // Description: libsocket is a network library used to handle TCP/UDP Client/Server communications
 //
-#include "socket.h"
+#include "../include/socket.h"
 #include <string.h> // memcpy()
 #include <sys/wait.h> // waitpid()
 
