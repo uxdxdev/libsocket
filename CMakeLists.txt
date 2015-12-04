@@ -11,4 +11,4 @@ set(SOURCES src/socket.c)
 add_library(socket SHARED ${SOURCES})
 
 # Install libsocket in /usr/local/lib
-#install(TARGETS socket DESTINATION lib)
+install(TARGETS socket DESTINATION lib)
