@@ -64,7 +64,7 @@ void Write(int fileDescriptor, void *buffer, size_t numberOfBytes);
 void Shutdown(int fileDescriptor, int shutdownOption);
 int Max(int x, int y);
 void SignalHandler(int signalNumber);
-void Signal(int signalNumber, void* signalHandler);
+void Signal(int signalNumber, void* SignalHandler);
 void Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize);
 void Listen(int socketFileDescriptor, int maxListenQSize);
 void MultiplexIO(FILE* fp, int socketFileDescriptor);
