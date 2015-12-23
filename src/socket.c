@@ -18,7 +18,7 @@ int Socket(int family, int type, int protocol)
 		exit(1); // Exit failure
 	}
 	int enable = 1;
-	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
 	{
     		error("setsockopt(SO_REUSEADDR) failed");
 	}
