@@ -132,6 +132,36 @@ int Connection(char *hostname, char *service /* Port number */, int type /* Clie
 	return sockFileDescriptor;
 }
 
+// Accept all incoming TCP connections and return a file descriptor
+// used to communicate with the client.
+int Accept(int iListenSocketFileDescriptor, struct Address *address)
+{
+	int connfd;
+	socklen_t client_len = sizeof(address->m_sAddress);
+
+	// Accept connections from clients
+	connfd = accept(iListenSocketFileDescriptor, (struct sockaddr *) &address->m_sAddress, &client_len);
+
+	if (connfd < 0)
+	{
+		// There was an error (interrupt)
+		if( errno == EINTR )
+		{
+			// Try another Accept() in the event of a system interrupt
+			//continue;
+			perror("AcceptConnections() system interrupt");
+			exit(1); // Exit failaure
+		}
+		else
+		{
+			// There was an error other than an interrupt so close the Parent process
+			perror("Accept error");
+			exit(3);
+		}
+	}
+	return connfd;
+}
+
 void Connect(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize)
 {
 	if (connect(socketFileDescriptor, socketAddress, socketSize) < 0)
