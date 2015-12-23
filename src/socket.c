@@ -347,6 +347,17 @@ int SendTo(int socketFileDescriptor, char *message, size_t size, int flags, stru
 	return numberOfBytesSent;
 }
 
+int Recv(int socketFileDescriptor, char *message, size_t size, int flags)
+{
+	int numberOfBytesReceived = recv(socketFileDescriptor, message, size, flags);
+	if(numberOfBytesReceived < 0)
+	{
+		perror("Error in Recv()");
+		exit(1); // Exit failure
+	}
+	return numberOfBytesReceived;
+}
+
 int ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int flags , struct sockaddr *sender, socklen_t *sendsize)
 {
 	int numberOfBytesReceived = recvfrom(socketFileDescriptor, message, bufferSize, flags, sender, sendsize);
