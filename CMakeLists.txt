@@ -4,5 +4,3 @@ project(libsocket)
 set(SOURCES src/socket.c)
 
 add_library(socket SHARED ${SOURCES})
-
-install(TARGETS socket)
