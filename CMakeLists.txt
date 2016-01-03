@@ -5,5 +5,7 @@ set(SOURCES src/socket.c)
 
 add_library(socket SHARED ${SOURCES})
 
-install(TARGETS socket)
+install(TARGETS socket
+  LIBRARY DESTINATION lib
+)
 
