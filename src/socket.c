@@ -332,7 +332,7 @@ int Send(int socketFileDescriptor, char *message, size_t size, int flags)
 	int numberOfBytesSent = send(socketFileDescriptor, message, size, flags);
 	if(numberOfBytesSent < 0)
 	{
-		perror("Error in Send()");
+		//perror("Error in Send()");
 		//exit(1); // Exit failure
 	}
 	return numberOfBytesSent;
@@ -354,7 +354,7 @@ int Recv(int socketFileDescriptor, char *message, size_t size, int flags)
 	int numberOfBytesReceived = recv(socketFileDescriptor, message, size, flags);
 	if(numberOfBytesReceived < 0)
 	{
-		perror("Error in Recv()");
+		//perror("Error in Recv()");
 		//exit(1); // Exit failure
 	}
 	return numberOfBytesReceived;
