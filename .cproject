@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
-		<cconfiguration id="cdt.managedbuild.toolchain.gnu.macosx.base.155075032">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.toolchain.gnu.macosx.base.155075032" moduleId="org.eclipse.cdt.core.settings" name="Default">
+		<cconfiguration id="cdt.managedbuild.toolchain.gnu.base.878452011">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.toolchain.gnu.base.878452011" moduleId="org.eclipse.cdt.core.settings" name="Default">
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.MachO64" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -14,17 +14,17 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration buildProperties="" id="cdt.managedbuild.toolchain.gnu.macosx.base.155075032" name="Default" parent="org.eclipse.cdt.build.core.emptycfg">
-					<folderInfo id="cdt.managedbuild.toolchain.gnu.macosx.base.155075032.1530198161" name="/" resourcePath="">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.base.1362630549" name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.base">
-							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.MachO64" id="cdt.managedbuild.target.gnu.platform.macosx.base.1199776082" name="Debug Platform" osList="macosx" superClass="cdt.managedbuild.target.gnu.platform.macosx.base"/>
-							<builder id="cdt.managedbuild.target.gnu.builder.macosx.base.1485876717" managedBuildOn="false" name="Gnu Make Builder.Default" superClass="cdt.managedbuild.target.gnu.builder.macosx.base"/>
-							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.base.674389511" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.base"/>
-							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base.2059308578" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.macosx.base.1619068406" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.macosx.base.335962026" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.base.1096686660" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.base.1408648712" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.base"/>
+				<configuration buildProperties="" id="cdt.managedbuild.toolchain.gnu.base.878452011" name="Default" parent="org.eclipse.cdt.build.core.emptycfg">
+					<folderInfo id="cdt.managedbuild.toolchain.gnu.base.878452011.615081785" name="/" resourcePath="">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.base.1454580363" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base.186345638" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
+							<builder id="cdt.managedbuild.target.gnu.builder.base.1884877358" managedBuildOn="false" name="Gnu Make Builder.Default" superClass="cdt.managedbuild.target.gnu.builder.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1946617868" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.428152752" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.800761859" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.672992322" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.840653100" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.base.1552448067" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base"/>
 						</toolChain>
 					</folderInfo>
 				</configuration>
@@ -36,7 +36,7 @@
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="libsocket.null.667420717" name="libsocket"/>
+		<project id="libsocket.null.1363772502" name="libsocket"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 </cproject>

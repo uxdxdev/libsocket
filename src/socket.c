@@ -8,6 +8,7 @@
 #include "../include/socket.h"
 #include <string.h> // memcpy()
 #include <sys/wait.h> // waitpid()
+#include <fcntl.h>
 
 int Socket(int family, int type, int protocol)
 {
@@ -17,6 +18,7 @@ int Socket(int family, int type, int protocol)
 		perror("Error in Socket()");
 		exit(1); // Exit failure
 	}
+
 	int enable = 1;
 	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
 	{
@@ -368,3 +370,16 @@ int ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int fla
 	}
 	return numberOfBytesReceived;
 }
+
+int SetNonBlocking(int socketFileDescriptor)
+{
+	// where socketfd is the socket you want to make non-blocking
+	int success = fcntl(socketFileDescriptor, F_SETFL, O_NONBLOCK);
+
+	if (success == -1){
+	  perror("Error in SetNonBlocking()");
+	  exit(1); // Exit failure
+	}
+	return success;
+}
+

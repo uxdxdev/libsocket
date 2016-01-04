@@ -80,4 +80,6 @@ int Recv(int socketFileDescriptor, char *message, size_t size, int flags);
 
 int ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int flags , struct sockaddr *sender, socklen_t *sendsize);
 
+int SetNonBlocking(int socketFileDescriptor);
+
 #endif /* INCLUDES_SOCKETS_H_ */
