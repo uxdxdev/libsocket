@@ -19,7 +19,7 @@
 #include <errno.h>
 
 // Max buffer size used for the read buffer of file descriptors
-#define MAX_BUF_SIZE 4096
+#define MAX_BUF_SIZE 128
 #define MAX_LISTEN_QUEUE_SIZE 1024
 
 // Used to store addressing information and populated
