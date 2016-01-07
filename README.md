@@ -8,6 +8,14 @@ Libsocket is a wrapper library around BSD Sockets allowing simple socket creatio
 $ cmake .
 $ make
 ```
+## Instructions
+- Download the repo
+- Extract to your third party library folder
+- `cd path/to/libsocket-folder`
+- Build
+- Link against the `libsocket` dynamic library in the `lib/`. 
+
+To use the API don't forget to include the header file `include/socket.h`.
 
 # Use cases
 
