@@ -23,4 +23,4 @@ Libsocket is currently being used in the following projects:
 
 - libhangman  https://github.com/damorton/libhangman.git
 - ngproject   https://github.com/damorton/ngproject.git
-- raig        https://github.com/damorton/libraig.git
+- libraig        https://github.com/damorton/libraig.git
