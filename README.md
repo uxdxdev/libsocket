@@ -13,7 +13,7 @@ $ make
 - Extract to your third party library folder
 - `cd path/to/libsocket-folder`
 - Build
-- Link against the `libsocket` dynamic library in the `lib/`. 
+- Link against the `libsocket` dynamic library in the `lib/` folder. 
 
 To use the API don't forget to include the header file `include/socket.h`.
 
