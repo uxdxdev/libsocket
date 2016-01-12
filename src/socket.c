@@ -66,7 +66,7 @@ void Address(int family, struct Address* address, char* ipAddress, int portNumbe
 	address->m_sAddress.sin_port = htons(portNumber); // set server port number
 }
 
-int Connection(const char *hostname, char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
+int Connection(const char *hostname, const char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
 {
 	int sockFileDescriptor;
 	struct addrinfo hints;

@@ -66,7 +66,7 @@ int Socket(int family, int type, int protocol);
 void Address(int family, struct Address* address, char* ipAddress, int portNumber);
 
 // Facilitates IPv4 and IPv6 addressing compatibility and handles any errors that may occur.
-int Connection(const char *address, char *service, int type /* Client or Server */, int protocol /* UDP or TCP */);
+int Connection(const char *address, const char *service, int type /* Client or Server */, int protocol /* UDP or TCP */);
 
 // Accept incoming client connections
 int Accept(int iListenSocketFileDescriptor, struct Address *address);
