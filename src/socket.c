@@ -146,7 +146,9 @@ int Connection(const char *hostname, const char *service /* Port number */, int 
 	if (tempAddrInfo == NULL) {
 	    // No connections found for the peer
 	    fprintf(stderr, "No connections found. Failed to Connect\n");
-	    exit(2);
+	    freeaddrinfo(result);
+	    return -1;
+	    //exit(2);
 	}
 
 	// Free the addrinfo struct after using it to store peer information
@@ -352,7 +354,7 @@ int Send(int socketFileDescriptor, char *message, size_t size, int flags)
 	int numberOfBytesSent = send(socketFileDescriptor, message, size, flags);
 	if(numberOfBytesSent < 0)
 	{
-		//perror("Error in Send()");
+		perror("Error in Send()");
 		//exit(1); // Exit failure
 	}
 	return numberOfBytesSent;
@@ -398,7 +400,7 @@ int SetNonBlocking(int socketFileDescriptor)
 
 	if (success == -1){
 	  perror("Error in SetNonBlocking()");
-	  exit(1); // Exit failure
+	  //exit(1); // Exit failure
 	}
 	return success;
 }
