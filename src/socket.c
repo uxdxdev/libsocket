@@ -119,7 +119,7 @@ int Connection(const char *hostname, const char *service /* Port number */, int 
 		    // For clients use connect()
 			if (connect(sockFileDescriptor, tempAddrInfo->ai_addr, tempAddrInfo->ai_addrlen) == -1) {
 				close(sockFileDescriptor);
-				perror("Connection() : connect()");
+				//perror("Connection() : connect()");
 				continue;
 			}
 	    }
@@ -145,7 +145,7 @@ int Connection(const char *hostname, const char *service /* Port number */, int 
 
 	if (tempAddrInfo == NULL) {
 	    // No connections found for the peer
-	    fprintf(stderr, "No connections found. Failed to Connect\n");
+	    //fprintf(stderr, "No connections found. Failed to Connect\n");
 	    freeaddrinfo(result);
 	    return -1;
 	    //exit(2);
