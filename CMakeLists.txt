@@ -30,10 +30,11 @@ project(libsocket)
 
 set(SOURCES src/socket.c)
 
-add_library(socket SHARED ${SOURCES})
+add_library(socket STATIC ${SOURCES})
 
 set_target_properties(socket
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 )
