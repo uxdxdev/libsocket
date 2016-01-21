@@ -66,7 +66,7 @@ void Address(int family, struct Address* address, char* ipAddress, int portNumbe
 	address->m_sAddress.sin_port = htons(portNumber); // set server port number
 }
 
-int Connection(char *hostname, char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
+int Connection(const char *hostname, const char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
 {
 	int sockFileDescriptor;
 	struct addrinfo hints;
@@ -119,7 +119,7 @@ int Connection(char *hostname, char *service /* Port number */, int type /* Clie
 		    // For clients use connect()
 			if (connect(sockFileDescriptor, tempAddrInfo->ai_addr, tempAddrInfo->ai_addrlen) == -1) {
 				close(sockFileDescriptor);
-				perror("Connection() : connect()");
+				//perror("Connection() : connect()");
 				continue;
 			}
 	    }
@@ -145,8 +145,10 @@ int Connection(char *hostname, char *service /* Port number */, int type /* Clie
 
 	if (tempAddrInfo == NULL) {
 	    // No connections found for the peer
-	    fprintf(stderr, "No connections found. Failed to Connect\n");
-	    exit(2);
+	    //fprintf(stderr, "No connections found. Failed to Connect\n");
+	    freeaddrinfo(result);
+	    return -1;
+	    //exit(2);
 	}
 
 	// Free the addrinfo struct after using it to store peer information
@@ -352,7 +354,7 @@ int Send(int socketFileDescriptor, char *message, size_t size, int flags)
 	int numberOfBytesSent = send(socketFileDescriptor, message, size, flags);
 	if(numberOfBytesSent < 0)
 	{
-		//perror("Error in Send()");
+		perror("Error in Send()");
 		//exit(1); // Exit failure
 	}
 	return numberOfBytesSent;
@@ -398,7 +400,7 @@ int SetNonBlocking(int socketFileDescriptor)
 
 	if (success == -1){
 	  perror("Error in SetNonBlocking()");
-	  exit(1); // Exit failure
+	  //exit(1); // Exit failure
 	}
 	return success;
 }
