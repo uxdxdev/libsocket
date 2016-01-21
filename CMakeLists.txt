@@ -25,6 +25,7 @@
 # SOFTWARE.
 #
 # */
+cmake_policy(SET CMP0017 NEW)
 cmake_minimum_required(VERSION 2.8)
 project(libsocket)
 
@@ -36,5 +37,4 @@ set_target_properties(socket
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 )
