@@ -240,27 +240,6 @@ int Max(int x, int y)
 	return ( x < y ) ? y : x;
 }
 
-void Signal(int signalNumber, void* SignalHandler)
-{
-	if(signal(SIGCHLD, SignalHandler) == SIG_ERR)
-	{
-		perror("Error in Signal()");
-		exit(1); // Exit failure
-	}
-}
-
-void SignalHandler(int signalNumber)
-{
-	pid_t processID;
-	int stat;
-
-	while( (processID = waitpid(WAIT_ANY, &stat, WNOHANG)) > 0)
-	{
-		printf("child terminated\n");
-	}
-	return;
-}
-
 void Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize)
 {
 	if (bind(socketFileDescriptor, socketAddress, socketSize) < 0) {

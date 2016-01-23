@@ -35,7 +35,6 @@ SOFTWARE.
 #include <netdb.h>
 #include <stdlib.h> // exit(),
 #include <unistd.h> // read(), write(), fork()
-#include <signal.h>
 #include <errno.h>
 
 // Max buffer size used for the read buffer of file descriptors
@@ -86,8 +85,6 @@ ssize_t Read(int fileDescriptor, void *buffer, size_t numberOfBytes);
 void Write(int fileDescriptor, void *buffer, size_t numberOfBytes);
 void Shutdown(int fileDescriptor, int shutdownOption);
 int Max(int x, int y);
-void SignalHandler(int signalNumber);
-void Signal(int signalNumber, void* SignalHandler);
 void Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize);
 void Listen(int socketFileDescriptor, int maxListenQSize);
 void MultiplexIO(FILE* fp, int socketFileDescriptor);
