@@ -33,10 +33,10 @@ set(SOURCES src/socket.c)
 
 add_library(socket SHARED ${SOURCES})
 
-GENERATE_EXPORT_HEADER( socket
+GENERATE_EXPORT_HEADER(socket
              BASE_NAME socket
              EXPORT_MACRO_NAME socket_EXPORT
-             EXPORT_FILE_NAME socket_Export.h
+             EXPORT_FILE_NAME ${CMAKE_CURRENT_SOURCE_DIR}/include/socket_Export.h
              STATIC_DEFINE socket_BUILT_AS_STATIC
 )
 if(WIN32)

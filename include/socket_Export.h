@@ -9,15 +9,15 @@
 #  ifndef socket_EXPORT
 #    ifdef socket_EXPORTS
         /* We are building this library */
-#      define socket_EXPORT __declspec(dllexport)
+#      define socket_EXPORT __attribute__((visibility("default")))
 #    else
         /* We are using this library */
-#      define socket_EXPORT __declspec(dllimport)
+#      define socket_EXPORT __attribute__((visibility("default")))
 #    endif
 #  endif
 
 #  ifndef SOCKET_NO_EXPORT
-#    define SOCKET_NO_EXPORT 
+#    define SOCKET_NO_EXPORT __attribute__((visibility("hidden")))
 #  endif
 #endif
 

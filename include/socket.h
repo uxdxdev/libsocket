@@ -28,7 +28,7 @@ SOFTWARE.
 #ifndef INCLUDES_SOCKETS_H_
 #define INCLUDES_SOCKETS_H_
 
-#include "../socket_Export.h"
+#include "socket_Export.h"
 
 #include <stdio.h> // perror()
 
