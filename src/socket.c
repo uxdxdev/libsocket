@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-#include "../include/socket.h"
+#include "socket.h"
 #include <string.h> // memcpy()
 #include <sys/wait.h> // waitpid()
 #include <fcntl.h>

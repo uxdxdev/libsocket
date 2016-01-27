@@ -28,6 +28,9 @@
 cmake_minimum_required(VERSION 2.8)
 project(libsocket)
 
+include_directories(
+	${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 set(SOURCES src/socket.c)
 
 add_library(socket SHARED ${SOURCES})
