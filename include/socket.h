@@ -28,11 +28,29 @@ SOFTWARE.
 #ifndef INCLUDES_SOCKETS_H_
 #define INCLUDES_SOCKETS_H_
 
+#include "../socket_Export.h"
+
 #include <stdio.h> // perror()
+
+#ifdef WIN32
+#define _WIN32_WINNT 0x0501
+
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
+#define SHUT_RD   SD_RECEIVE 
+#define SHUT_WR   SD_SEND 
+#define SHUT_RDWR SD_BOTH 
+#pragma comment(lib,"ws2_32.lib")
+
+#else
+#define closesocket close
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#endif
+
 #include <stdlib.h> // exit(),
 #include <unistd.h> // read(), write(), fork()
 #include <errno.h>
@@ -58,7 +76,7 @@ enum eAppType{
 // Socket() creates a socket based on the family, type,
 // and protocol parameters passed in. Errors are also handled
 // if the call to socket fails.
-int Socket(int family, int type, int protocol);
+int socket_EXPORT Socket(int family, int type, int protocol);
 
 // Populates an Address object with information relative to the ipAddress given as a parameter.
 // The port number and address family are also set in the Address object.

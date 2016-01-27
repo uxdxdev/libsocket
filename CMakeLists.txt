@@ -27,10 +27,21 @@
 # */
 cmake_minimum_required(VERSION 2.8)
 project(libsocket)
+include (GenerateExportHeader)
 
 set(SOURCES src/socket.c)
 
 add_library(socket SHARED ${SOURCES})
+
+GENERATE_EXPORT_HEADER( socket
+             BASE_NAME socket
+             EXPORT_MACRO_NAME socket_EXPORT
+             EXPORT_FILE_NAME socket_Export.h
+             STATIC_DEFINE socket_BUILT_AS_STATIC
+)
+if(WIN32)
+  target_link_libraries(socket wsock32 ws2_32)
+endif()
 
 set_target_properties(socket
     PROPERTIES

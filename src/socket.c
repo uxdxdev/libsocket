@@ -27,10 +27,9 @@ SOFTWARE.
 */
 #include "../include/socket.h"
 #include <string.h> // memcpy()
-#include <sys/wait.h> // waitpid()
 #include <fcntl.h>
 
-int Socket(int family, int type, int protocol)
+int socket_EXPORT Socket(int family, int type, int protocol)
 {
 	int sock = socket(family, type, protocol);
 	if (sock < 0)
@@ -40,7 +39,7 @@ int Socket(int family, int type, int protocol)
 	}
 
 	int enable = 1;
-	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (void*)&enable, sizeof(enable)) < 0)
 	{
     		perror("setsockopt(SO_REUSEADDR) failed");
 	}
@@ -318,7 +317,7 @@ void MultiplexIO(FILE* fp, int socketFileDescriptor)
 			{
 				//printf("Client has terminated the connection");
 				stdinEOF = 1;
-				Shutdown(socketFileDescriptor, SHUT_WR);
+				Shutdown(socketFileDescriptor, 1);
 				FD_CLR(fileno(fp), &readFileDescriptorSet);
 				continue;
 			}
@@ -374,6 +373,13 @@ int ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int fla
 
 int SetNonBlocking(int socketFileDescriptor)
 {
+#ifdef WIN32
+	unsigned long on = 1;
+	if (0 != ioctlsocket(socketFileDescriptor, FIONBIO, &on))
+	{
+		/* Handle failure. */
+	}
+#else
 	// where socketfd is the socket you want to make non-blocking
 	int success = fcntl(socketFileDescriptor, F_SETFL, O_NONBLOCK);
 
@@ -382,5 +388,6 @@ int SetNonBlocking(int socketFileDescriptor)
 	  //exit(1); // Exit failure
 	}
 	return success;
+#endif
 }
 
