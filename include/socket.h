@@ -30,10 +30,11 @@ SOFTWARE.
 
 #include "socket_Export.h"
 
-#include <stdio.h> // perror()
+#ifdef __WIN32
 
-#ifdef WIN32
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501
+#endif
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -44,13 +45,16 @@ SOFTWARE.
 #pragma comment(lib,"ws2_32.lib")
 
 #else
+    
 #define closesocket close
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+
 #endif
 
+#include <stdio.h> // perror()
+#include <sys/types.h>
 #include <stdlib.h> // exit(),
 #include <unistd.h> // read(), write(), fork()
 #include <errno.h>
@@ -73,6 +77,9 @@ enum eAppType{
 	TYPE_SERVER
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 // Socket() creates a socket based on the family, type,
 // and protocol parameters passed in. Errors are also handled
 // if the call to socket fails.
@@ -117,4 +124,7 @@ int ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int fla
 
 int SetNonBlocking(int socketFileDescriptor);
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* INCLUDES_SOCKETS_H_ */

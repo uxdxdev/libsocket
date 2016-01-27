@@ -37,8 +37,8 @@ GENERATE_EXPORT_HEADER(socket
              BASE_NAME socket
              EXPORT_MACRO_NAME socket_EXPORT
              EXPORT_FILE_NAME ${CMAKE_CURRENT_SOURCE_DIR}/include/socket_Export.h
-             STATIC_DEFINE socket_BUILT_AS_STATIC
 )
+
 if(WIN32)
   target_link_libraries(socket wsock32 ws2_32)
 endif()
@@ -47,4 +47,5 @@ set_target_properties(socket
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib"
 )
