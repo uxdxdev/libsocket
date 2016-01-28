@@ -11,3 +11,11 @@ cmake_install.cmake
 libsocket.*
 install_manifest.txt
 *~
+ALL_BUILD.vcxproj
+ALL_BUILD.vcxproj.filters
+Win32/
+ZERO_CHECK.vcxproj
+ZERO_CHECK.vcxproj.filters
+socket.dir/
+socket.vcxproj
+socket.vcxproj.filters

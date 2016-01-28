@@ -9,10 +9,10 @@
 #  ifndef socket_EXPORT
 #    ifdef socket_EXPORTS
         /* We are building this library */
-#      define socket_EXPORT 
+#      define socket_EXPORT __declspec(dllexport)
 #    else
         /* We are using this library */
-#      define socket_EXPORT 
+#      define socket_EXPORT __declspec(dllimport)
 #    endif
 #  endif
 
@@ -22,7 +22,7 @@
 #endif
 
 #ifndef SOCKET_DEPRECATED
-#  define SOCKET_DEPRECATED __attribute__ ((__deprecated__))
+#  define SOCKET_DEPRECATED __declspec(deprecated)
 #endif
 
 #ifndef SOCKET_DEPRECATED_EXPORT
