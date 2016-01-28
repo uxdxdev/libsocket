@@ -67,11 +67,19 @@ void socket_EXPORT Address(int family, struct Address* address, char* ipAddress,
 
 int socket_EXPORT Connection(const char *hostname, const char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
 {
+#ifdef WIN32
+	WSADATA wsaData;
+	// Initialize Winsock
+	int errorReturnValue = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	if (errorReturnValue != 0) {
+		printf("WSAStartup failed with error: %d\n", errorReturnValue);
+		return 1;
+	}
+#endif
 	int sockFileDescriptor;
 	struct addrinfo hints;
 	struct addrinfo *result;
 	struct addrinfo *tempAddrInfo;
-	int errorReturnValue;
 
 	memset(&hints, 0, sizeof hints);
 	hints.ai_family = AF_UNSPEC; // use either IPv4 or IPv6
@@ -117,7 +125,7 @@ int socket_EXPORT Connection(const char *hostname, const char *service /* Port n
 	    {
 		    // For clients use connect()
 			if (connect(sockFileDescriptor, tempAddrInfo->ai_addr, tempAddrInfo->ai_addrlen) == -1) {
-				close(sockFileDescriptor);
+				Close(sockFileDescriptor);
 				//perror("Connection() : connect()");
 				continue;
 			}
@@ -126,7 +134,7 @@ int socket_EXPORT Connection(const char *hostname, const char *service /* Port n
 	    {
 	    	// For servers use bind()
 	    	if (bind(sockFileDescriptor, tempAddrInfo->ai_addr, tempAddrInfo->ai_addrlen) == -1) {
-				close(sockFileDescriptor);
+				Close(sockFileDescriptor);
 				perror("Connection() : bind()");
 				continue;
 			}
@@ -377,7 +385,8 @@ int socket_EXPORT SetNonBlocking(int socketFileDescriptor)
 	unsigned long on = 1;
 	if (0 != ioctlsocket(socketFileDescriptor, FIONBIO, &on))
 	{
-		/* Handle failure. */
+		perror("Error in SetNonBlocking()");
+		exit(1); // Exit failure
 	}
 #else
 	// where socketfd is the socket you want to make non-blocking
@@ -394,6 +403,9 @@ int socket_EXPORT SetNonBlocking(int socketFileDescriptor)
 int socket_EXPORT Close(int socketFileDescriptor)
 {
     close(socketFileDescriptor);
+#ifdef WIN32
+	WSACleanup();
+#endif
 }
 
 
