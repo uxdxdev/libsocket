@@ -46,7 +46,7 @@ int socket_EXPORT Socket(int family, int type, int protocol)
 	return sock;
 }
 
-void Address(int family, struct Address* address, char* ipAddress, int portNumber)
+void socket_EXPORT Address(int family, struct Address* address, char* ipAddress, int portNumber)
 {
 	//printf("Address being created\n");
 	// create the server address
@@ -65,7 +65,7 @@ void Address(int family, struct Address* address, char* ipAddress, int portNumbe
 	address->m_sAddress.sin_port = htons(portNumber); // set server port number
 }
 
-int Connection(const char *hostname, const char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
+int socket_EXPORT Connection(const char *hostname, const char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
 {
 	int sockFileDescriptor;
 	struct addrinfo hints;
@@ -157,7 +157,7 @@ int Connection(const char *hostname, const char *service /* Port number */, int 
 
 // Accept all incoming TCP connections and return a file descriptor
 // used to communicate with the client.
-int Accept(int iListenSocketFileDescriptor, struct Address *address)
+int socket_EXPORT Accept(int iListenSocketFileDescriptor, struct Address *address)
 {
 	int connfd;
 	socklen_t client_len = sizeof(address->m_sAddress);
@@ -185,7 +185,7 @@ int Accept(int iListenSocketFileDescriptor, struct Address *address)
 	return connfd;
 }
 
-void Connect(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize)
+void socket_EXPORT Connect(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize)
 {
 	if (connect(socketFileDescriptor, socketAddress, socketSize) < 0)
 	{
@@ -194,7 +194,7 @@ void Connect(int socketFileDescriptor, const struct sockaddr* socketAddress, soc
 	}
 }
 
-int Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptorSet, fd_set *writeFileDescriptorSet, fd_set *exceptFileDescriptorSet, struct timeval *timeout)
+int socket_EXPORT Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptorSet, fd_set *writeFileDescriptorSet, fd_set *exceptFileDescriptorSet, struct timeval *timeout)
 {
 	int n;
 	if ( (n = select(maxFileDescriptorsPlus1, readFileDescriptorSet, writeFileDescriptorSet, exceptFileDescriptorSet, timeout)) < 0)
@@ -205,7 +205,7 @@ int Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptorSet, fd_set *w
 	return(n);		/* can return 0 on timeout */
 }
 
-ssize_t Read(int fileDescriptor, void *buffer, size_t numberOfBytes)
+ssize_t socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes)
 {
 	ssize_t n;
 	if ( (n = read(fileDescriptor, buffer, numberOfBytes)) == -1)
@@ -216,7 +216,7 @@ ssize_t Read(int fileDescriptor, void *buffer, size_t numberOfBytes)
 	return(n);
 }
 
-void Write(int fileDescriptor, void *buffer, size_t numberOfBytes)
+void socket_EXPORT Write(int fileDescriptor, void *buffer, size_t numberOfBytes)
 {
 	if (write(fileDescriptor, buffer, numberOfBytes) != numberOfBytes)
 	{
@@ -234,12 +234,12 @@ void Shutdown(int fileDescriptor, int shutdownOption)
 	}
 }
 
-int Max(int x, int y)
+int socket_EXPORT Max(int x, int y)
 {
 	return ( x < y ) ? y : x;
 }
 
-void Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize)
+void socket_EXPORT Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize)
 {
 	if (bind(socketFileDescriptor, socketAddress, socketSize) < 0) {
 		perror("Error in Bind()");
@@ -247,7 +247,7 @@ void Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, sockle
 	}
 }
 
-void Listen(int socketFileDescriptor, int maxListenQSize)
+void socket_EXPORT Listen(int socketFileDescriptor, int maxListenQSize)
 {
 	if(listen(socketFileDescriptor, maxListenQSize) < 0)
 	{
@@ -256,7 +256,7 @@ void Listen(int socketFileDescriptor, int maxListenQSize)
 	}
 }
 
-void MultiplexIO(FILE* fp, int socketFileDescriptor)
+void socket_EXPORT MultiplexIO(FILE* fp, int socketFileDescriptor)
 {
 	int maxFileDescriptorsPlus1;
 	int stdinEOF = 0;
@@ -327,7 +327,7 @@ void MultiplexIO(FILE* fp, int socketFileDescriptor)
 	}
 }
 
-int Send(int socketFileDescriptor, char *message, size_t size, int flags)
+int socket_EXPORT Send(int socketFileDescriptor, char *message, size_t size, int flags)
 {
 	int numberOfBytesSent = send(socketFileDescriptor, message, size, flags);
 	if(numberOfBytesSent < 0)
@@ -338,7 +338,7 @@ int Send(int socketFileDescriptor, char *message, size_t size, int flags)
 	return numberOfBytesSent;
 }
 
-int SendTo(int socketFileDescriptor, char *message, size_t size, int flags, struct sockaddr *sender, socklen_t sendsize)
+int socket_EXPORT SendTo(int socketFileDescriptor, char *message, size_t size, int flags, struct sockaddr *sender, socklen_t sendsize)
 {
 	int numberOfBytesSent = sendto(socketFileDescriptor, message, size, flags, sender, sendsize);
 	if(numberOfBytesSent < 0)
@@ -349,7 +349,7 @@ int SendTo(int socketFileDescriptor, char *message, size_t size, int flags, stru
 	return numberOfBytesSent;
 }
 
-int Recv(int socketFileDescriptor, char *message, size_t size, int flags)
+int socket_EXPORT Recv(int socketFileDescriptor, char *message, size_t size, int flags)
 {
 	int numberOfBytesReceived = recv(socketFileDescriptor, message, size, flags);
 	if(numberOfBytesReceived < 0)
@@ -360,7 +360,7 @@ int Recv(int socketFileDescriptor, char *message, size_t size, int flags)
 	return numberOfBytesReceived;
 }
 
-int ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int flags , struct sockaddr *sender, socklen_t *sendsize)
+int socket_EXPORT ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int flags , struct sockaddr *sender, socklen_t *sendsize)
 {
 	int numberOfBytesReceived = recvfrom(socketFileDescriptor, message, bufferSize, flags, sender, sendsize);
 	if(numberOfBytesReceived < 0)
@@ -371,7 +371,7 @@ int ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int fla
 	return numberOfBytesReceived;
 }
 
-int SetNonBlocking(int socketFileDescriptor)
+int socket_EXPORT SetNonBlocking(int socketFileDescriptor)
 {
 #ifdef WIN32
 	unsigned long on = 1;
@@ -390,4 +390,10 @@ int SetNonBlocking(int socketFileDescriptor)
 	return success;
 #endif
 }
+
+int socket_EXPORT Close(int socketFileDescriptor)
+{
+    close(socketFileDescriptor);
+}
+
 

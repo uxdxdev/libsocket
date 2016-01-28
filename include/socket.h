@@ -127,6 +127,8 @@ int socket_EXPORT ReceiveFrom(int socketFileDescriptor, char *message, int buffe
 
 int socket_EXPORT SetNonBlocking(int socketFileDescriptor);
 
+int socket_EXPORT Close(int socketFileDescriptor);
+
 #ifdef __cplusplus
 }
 #endif
