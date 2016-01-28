@@ -7,7 +7,6 @@ cmake_install.cmake
 .settings
 .project
 .cproject
-libsocket.*
 install_manifest.txt
 *~
 ALL_BUILD.vcxproj
@@ -18,3 +17,6 @@ ZERO_CHECK.vcxproj.filters
 socket.dir/
 socket.vcxproj
 socket.vcxproj.filters
+libsocket.sdf
+libsocket.sln
+libsocket.v12.suo
