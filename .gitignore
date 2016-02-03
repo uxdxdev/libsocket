@@ -20,3 +20,6 @@ socket.vcxproj.filters
 libsocket.sdf
 libsocket.sln
 libsocket.v12.suo
+ALL_BUILD.vcxproj.user
+ZERO_CHECK.vcxproj.user
+socket.vcxproj.user
