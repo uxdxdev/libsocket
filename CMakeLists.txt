@@ -31,6 +31,11 @@ include (GenerateExportHeader)
 
 set(SOURCES src/socket.c)
 
+if(WIN32)
+  set(CMAKE_C_FLAGS "/ZW")
+endif()
+
+
 add_library(socket SHARED ${SOURCES})
 
 GENERATE_EXPORT_HEADER(socket

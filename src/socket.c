@@ -402,7 +402,7 @@ int socket_EXPORT SetNonBlocking(int socketFileDescriptor)
 
 int socket_EXPORT Close(int socketFileDescriptor)
 {
-    close(socketFileDescriptor);
+	closesocket(socketFileDescriptor);
 #ifdef WIN32
 	WSACleanup();
 #endif

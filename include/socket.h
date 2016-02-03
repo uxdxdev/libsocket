@@ -30,7 +30,7 @@ SOFTWARE.
 
 #include "socket_Export.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501
@@ -47,13 +47,13 @@ SOFTWARE.
 typedef int socklen_t;  
 typedef int ssize_t;
 
-#define closesocket close
-
 #else
     
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+
+void closesocket(int socket) { close(socket); }
 
 #endif
 
