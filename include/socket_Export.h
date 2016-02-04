@@ -22,7 +22,7 @@
 #endif
 
 #ifndef SOCKET_DEPRECATED
-#  define SOCKET_DEPRECATED __declspec(deprecated)
+#  define SOCKET_DEPRECATED 
 #endif
 
 #ifndef SOCKET_DEPRECATED_EXPORT

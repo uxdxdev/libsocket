@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-#include "../include/socket.h"
+#include "include/socket.h"
 #include <string.h> // memcpy()
 #include <fcntl.h>
 
@@ -46,10 +46,12 @@ int socket_EXPORT Socket(int family, int type, int protocol)
 	return sock;
 }
 
+/*
 void socket_EXPORT Address(int family, struct Address* address, char* ipAddress, int portNumber)
 {
 	//printf("Address being created\n");
 	// create the server address
+	
 	address->m_sHost_info = gethostbyname(ipAddress);
 	if (address->m_sHost_info == NULL)
 	{
@@ -64,7 +66,7 @@ void socket_EXPORT Address(int family, struct Address* address, char* ipAddress,
 
 	address->m_sAddress.sin_port = htons(portNumber); // set server port number
 }
-
+*/
 int socket_EXPORT Connection(const char *hostname, const char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
 {
 #ifdef WIN32
@@ -280,14 +282,14 @@ void socket_EXPORT MultiplexIO(FILE* fp, int socketFileDescriptor)
 		if( stdinEOF == 0)
 		{
 			// get the integer value for the stdin file descriptor and set this is the read set
-			FD_SET(fileno(fp), &readFileDescriptorSet);
+			FD_SET(_fileno(fp), &readFileDescriptorSet);
 		}
 
 		// set the socket file descriptor in the read set
 		FD_SET(socketFileDescriptor, &readFileDescriptorSet);
 
 		// find the highest index for the readset
-		maxFileDescriptorsPlus1 = Max(fileno(fp), socketFileDescriptor) + 1;
+		maxFileDescriptorsPlus1 = Max(_fileno(fp), socketFileDescriptor) + 1;
 
 		// call the select function to check each file descriptor for activity
 		Select(maxFileDescriptorsPlus1, &readFileDescriptorSet, NULL, NULL, NULL);
@@ -312,13 +314,13 @@ void socket_EXPORT MultiplexIO(FILE* fp, int socketFileDescriptor)
 			}
 
 			// write the results of reading the socket
-			Write(fileno(stdout), buffer, numberOfBytesReceived);
+			Write(_fileno(stdout), buffer, numberOfBytesReceived);
 		}
 
 		// input file descriptor is active
-		if( FD_ISSET(fileno(fp), &readFileDescriptorSet) )
+		if( FD_ISSET(_fileno(fp), &readFileDescriptorSet) )
 		{
-			numberOfBytesReceived = Read(fileno(fp), buffer, MAX_BUF_SIZE);
+			numberOfBytesReceived = Read(_fileno(fp), buffer, MAX_BUF_SIZE);
 
 			// if the client is terminated the socket is shutdown
 			if( numberOfBytesReceived == 0 )
@@ -326,7 +328,7 @@ void socket_EXPORT MultiplexIO(FILE* fp, int socketFileDescriptor)
 				//printf("Client has terminated the connection");
 				stdinEOF = 1;
 				Shutdown(socketFileDescriptor, 1);
-				FD_CLR(fileno(fp), &readFileDescriptorSet);
+				FD_CLR(_fileno(fp), &readFileDescriptorSet);
 				continue;
 			}
 
