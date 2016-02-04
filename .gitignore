@@ -24,3 +24,4 @@ ALL_BUILD.vcxproj.user
 ZERO_CHECK.vcxproj.user
 socket.vcxproj.user
 *.opensdf
+.vs
