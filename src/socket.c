@@ -69,12 +69,13 @@ void socket_EXPORT Address(int family, struct Address* address, char* ipAddress,
 */
 int socket_EXPORT Connection(const char *hostname, const char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
 {
-#ifdef WIN32
+#ifdef _WIN32
 	WSADATA wsaData;
 	// Initialize Winsock
 	int errorReturnValue = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (errorReturnValue != 0) {
 		printf("WSAStartup failed with error: %d\n", errorReturnValue);
+		exit(1);
 		return 1;
 	}
 #endif
@@ -215,10 +216,22 @@ int socket_EXPORT Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptor
 	return(n);		/* can return 0 on timeout */
 }
 
+/*
 ssize_t socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes)
 {
 	ssize_t n;
 	if ( (n = read(fileDescriptor, buffer, numberOfBytes)) == -1)
+	{
+		perror("Error in Read()");
+		exit(1); // Exit failure
+	}
+	return(n);
+}
+*/
+int socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes)
+{
+	int n;
+	if ((n = read(fileDescriptor, buffer, numberOfBytes)) == -1)
 	{
 		perror("Error in Read()");
 		exit(1); // Exit failure
@@ -383,7 +396,7 @@ int socket_EXPORT ReceiveFrom(int socketFileDescriptor, char *message, int buffe
 
 int socket_EXPORT SetNonBlocking(int socketFileDescriptor)
 {
-#ifdef WIN32
+#ifdef _WIN32
 	unsigned long on = 1;
 	if (0 != ioctlsocket(socketFileDescriptor, FIONBIO, &on))
 	{
@@ -405,7 +418,7 @@ int socket_EXPORT SetNonBlocking(int socketFileDescriptor)
 int socket_EXPORT Close(int socketFileDescriptor)
 {
 	closesocket(socketFileDescriptor);
-#ifdef WIN32
+#ifdef _WIN32
 	WSACleanup();
 #endif
 }

@@ -32,10 +32,6 @@ SOFTWARE.
 
 #ifdef _WIN32
 
-#ifndef _WIN32_WINNT
-//#define _WIN32_WINNT 0x0501
-#endif
-
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
@@ -44,8 +40,8 @@ SOFTWARE.
 #define SHUT_RDWR SD_BOTH 
 #pragma comment(lib,"ws2_32.lib")
 
-typedef int socklen_t;  
-typedef int ssize_t;
+//typedef int socklen_t;  
+//typedef int ssize_t;
 
 #else
     
@@ -90,7 +86,7 @@ int socket_EXPORT Socket(int family, int type, int protocol);
 
 // Populates an Address object with information relative to the ipAddress given as a parameter.
 // The port number and address family are also set in the Address object.
-void socket_EXPORT Address(int family, struct Address* address, char* ipAddress, int portNumber);
+//void socket_EXPORT Address(int family, struct Address* address, char* ipAddress, int portNumber);
 
 // Facilitates IPv4 and IPv6 addressing compatibility and handles any errors that may occur.
 int socket_EXPORT Connection(const char *address, const char *service, int type /* Client or Server */, int protocol /* UDP or TCP */);
@@ -109,7 +105,8 @@ void socket_EXPORT Connect(int socketFileDescriptor, const struct sockaddr* sock
 int socket_EXPORT Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptorSet, fd_set *writeFileDescriptorSet, fd_set *exceptFileDescriptorSet, struct timeval *timeout);
 
 // Read
-ssize_t socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes);
+//ssize_t socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes);
+int socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes);
 void socket_EXPORT Write(int fileDescriptor, void *buffer, size_t numberOfBytes);
 void socket_EXPORT Shutdown(int fileDescriptor, int shutdownOption);
 int socket_EXPORT Max(int x, int y);
