@@ -47,6 +47,8 @@ SOFTWARE.
 #include <netdb.h>
 #include <unistd.h> // close()
 
+#define _fileno fileno // fileno deprecated on windows platform
+
 #endif
 
 #include <stdio.h> // perror()
