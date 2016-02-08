@@ -40,9 +40,6 @@ SOFTWARE.
 #define SHUT_RDWR SD_BOTH 
 #pragma comment(lib,"ws2_32.lib")
 
-//typedef int socklen_t;  
-//typedef int ssize_t;
-
 #else
     
 #include <sys/socket.h>
@@ -101,11 +98,17 @@ int socket_EXPORT Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptor
 
 // Read
 int socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes);
+
 void socket_EXPORT Write(int fileDescriptor, void *buffer, size_t numberOfBytes);
+
 void socket_EXPORT Shutdown(int fileDescriptor, int shutdownOption);
+
 int socket_EXPORT Max(int x, int y);
+
 void socket_EXPORT Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize);
+
 void socket_EXPORT Listen(int socketFileDescriptor, int maxListenQSize);
+
 void socket_EXPORT MultiplexIO(FILE* fp, int socketFileDescriptor);
 
 int socket_EXPORT Send(int socketFileDescriptor, char *message, size_t size, int flags);
