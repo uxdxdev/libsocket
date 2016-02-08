@@ -25,8 +25,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-#ifndef INCLUDES_SOCKETS_H_
-#define INCLUDES_SOCKETS_H_
+#ifndef INCLUDE_SOCKETS_H_
+#define INCLUDE_SOCKETS_H_
 
 #include "socket_Export.h"
 
@@ -48,8 +48,7 @@ SOFTWARE.
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
-
-void closesocket(int socket) { close(socket); }
+#include <unistd.h> // close()
 
 #endif
 

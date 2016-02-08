@@ -386,9 +386,11 @@ int socket_EXPORT SetNonBlocking(int socketFileDescriptor)
 
 void socket_EXPORT Close(int socketFileDescriptor)
 {
-	closesocket(socketFileDescriptor);
 #ifdef _WIN32
+	closesocket(socketFileDescriptor);
 	WSACleanup();
+#else
+	close(socketFileDescriptor);
 #endif
 }
 
