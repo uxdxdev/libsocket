@@ -35,6 +35,9 @@ if(WIN32)
   set(CMAKE_C_FLAGS "/ZW")
 endif()
 
+include_directories(
+	${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 add_library(socket SHARED ${SOURCES})
 
@@ -50,7 +53,6 @@ endif()
 
 set_target_properties(socket
     PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib/linux"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib/linux"    
 )

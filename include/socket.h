@@ -84,10 +84,6 @@ extern "C" {
 // if the call to socket fails.
 int socket_EXPORT Socket(int family, int type, int protocol);
 
-// Populates an Address object with information relative to the ipAddress given as a parameter.
-// The port number and address family are also set in the Address object.
-//void socket_EXPORT Address(int family, struct Address* address, char* ipAddress, int portNumber);
-
 // Facilitates IPv4 and IPv6 addressing compatibility and handles any errors that may occur.
 int socket_EXPORT Connection(const char *address, const char *service, int type /* Client or Server */, int protocol /* UDP or TCP */);
 
@@ -105,7 +101,6 @@ void socket_EXPORT Connect(int socketFileDescriptor, const struct sockaddr* sock
 int socket_EXPORT Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptorSet, fd_set *writeFileDescriptorSet, fd_set *exceptFileDescriptorSet, struct timeval *timeout);
 
 // Read
-//ssize_t socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes);
 int socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes);
 void socket_EXPORT Write(int fileDescriptor, void *buffer, size_t numberOfBytes);
 void socket_EXPORT Shutdown(int fileDescriptor, int shutdownOption);
@@ -124,7 +119,7 @@ int socket_EXPORT ReceiveFrom(int socketFileDescriptor, char *message, int buffe
 
 int socket_EXPORT SetNonBlocking(int socketFileDescriptor);
 
-int socket_EXPORT Close(int socketFileDescriptor);
+void socket_EXPORT Close(int socketFileDescriptor);
 
 #ifdef __cplusplus
 }

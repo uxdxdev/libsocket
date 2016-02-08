@@ -46,33 +46,14 @@ int socket_EXPORT Socket(int family, int type, int protocol)
 	return sock;
 }
 
-/*
-void socket_EXPORT Address(int family, struct Address* address, char* ipAddress, int portNumber)
-{
-	//printf("Address being created\n");
-	// create the server address
-	
-	address->m_sHost_info = gethostbyname(ipAddress);
-	if (address->m_sHost_info == NULL)
-	{
-		fprintf(stderr, "unknown host:%s \n", ipAddress);
-		exit(1); // Exit failure
-	}
-
-	address->m_sAddress.sin_family = address->m_sHost_info->h_addrtype; // set protocol family
-
-	// address struct, network address from host_info, size of host_info
-	memcpy((char *) &address->m_sAddress.sin_addr, address->m_sHost_info->h_addr, address->m_sHost_info->h_length);
-
-	address->m_sAddress.sin_port = htons(portNumber); // set server port number
-}
-*/
 int socket_EXPORT Connection(const char *hostname, const char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
 {
+	int errorReturnValue;
+
 #ifdef _WIN32
 	WSADATA wsaData;
 	// Initialize Winsock
-	int errorReturnValue = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	errorReturnValue = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (errorReturnValue != 0) {
 		printf("WSAStartup failed with error: %d\n", errorReturnValue);
 		exit(1);
@@ -216,18 +197,6 @@ int socket_EXPORT Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptor
 	return(n);		/* can return 0 on timeout */
 }
 
-/*
-ssize_t socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes)
-{
-	ssize_t n;
-	if ( (n = read(fileDescriptor, buffer, numberOfBytes)) == -1)
-	{
-		perror("Error in Read()");
-		exit(1); // Exit failure
-	}
-	return(n);
-}
-*/
 int socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes)
 {
 	int n;
@@ -415,7 +384,7 @@ int socket_EXPORT SetNonBlocking(int socketFileDescriptor)
 #endif
 }
 
-int socket_EXPORT Close(int socketFileDescriptor)
+void socket_EXPORT Close(int socketFileDescriptor)
 {
 	closesocket(socketFileDescriptor);
 #ifdef _WIN32
