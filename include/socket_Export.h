@@ -9,20 +9,20 @@
 #  ifndef socket_EXPORT
 #    ifdef socket_EXPORTS
         /* We are building this library */
-#      define socket_EXPORT __attribute__((visibility("default")))
+#      define socket_EXPORT __declspec(dllexport)
 #    else
         /* We are using this library */
-#      define socket_EXPORT __attribute__((visibility("default")))
+#      define socket_EXPORT __declspec(dllimport)
 #    endif
 #  endif
 
 #  ifndef SOCKET_NO_EXPORT
-#    define SOCKET_NO_EXPORT __attribute__((visibility("hidden")))
+#    define SOCKET_NO_EXPORT 
 #  endif
 #endif
 
 #ifndef SOCKET_DEPRECATED
-#  define SOCKET_DEPRECATED __attribute__ ((__deprecated__))
+#  define SOCKET_DEPRECATED __declspec(deprecated)
 #endif
 
 #ifndef SOCKET_DEPRECATED_EXPORT
