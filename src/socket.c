@@ -25,12 +25,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-#include "socket.h"
+#include "include/socket.h"
 #include <string.h> // memcpy()
-#include <sys/wait.h> // waitpid()
 #include <fcntl.h>
 
-int Socket(int family, int type, int protocol)
+int socket_EXPORT Socket(int family, int type, int protocol)
 {
 	int sock = socket(family, type, protocol);
 	if (sock < 0)
@@ -40,39 +39,31 @@ int Socket(int family, int type, int protocol)
 	}
 
 	int enable = 1;
-	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (void*)&enable, sizeof(enable)) < 0)
 	{
     		perror("setsockopt(SO_REUSEADDR) failed");
 	}
 	return sock;
 }
 
-void Address(int family, struct Address* address, char* ipAddress, int portNumber)
+int socket_EXPORT Connection(const char *hostname, const char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
 {
-	//printf("Address being created\n");
-	// create the server address
-	address->m_sHost_info = gethostbyname(ipAddress);
-	if (address->m_sHost_info == NULL)
-	{
-		fprintf(stderr, "unknown host:%s \n", ipAddress);
-		exit(1); // Exit failure
+	int errorReturnValue;
+
+#ifdef _WIN32
+	WSADATA wsaData;
+	// Initialize Winsock
+	errorReturnValue = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	if (errorReturnValue != 0) {
+		printf("WSAStartup failed with error: %d\n", errorReturnValue);
+		exit(1);
+		return 1;
 	}
-
-	address->m_sAddress.sin_family = address->m_sHost_info->h_addrtype; // set protocol family
-
-	// address struct, network address from host_info, size of host_info
-	memcpy((char *) &address->m_sAddress.sin_addr, address->m_sHost_info->h_addr, address->m_sHost_info->h_length);
-
-	address->m_sAddress.sin_port = htons(portNumber); // set server port number
-}
-
-int Connection(const char *hostname, const char *service /* Port number */, int type /* Client or Server */, int protocol /* UDP or TCP */)
-{
+#endif
 	int sockFileDescriptor;
 	struct addrinfo hints;
 	struct addrinfo *result;
 	struct addrinfo *tempAddrInfo;
-	int errorReturnValue;
 
 	memset(&hints, 0, sizeof hints);
 	hints.ai_family = AF_UNSPEC; // use either IPv4 or IPv6
@@ -118,7 +109,7 @@ int Connection(const char *hostname, const char *service /* Port number */, int 
 	    {
 		    // For clients use connect()
 			if (connect(sockFileDescriptor, tempAddrInfo->ai_addr, tempAddrInfo->ai_addrlen) == -1) {
-				close(sockFileDescriptor);
+				Close(sockFileDescriptor);
 				//perror("Connection() : connect()");
 				continue;
 			}
@@ -127,7 +118,7 @@ int Connection(const char *hostname, const char *service /* Port number */, int 
 	    {
 	    	// For servers use bind()
 	    	if (bind(sockFileDescriptor, tempAddrInfo->ai_addr, tempAddrInfo->ai_addrlen) == -1) {
-				close(sockFileDescriptor);
+				Close(sockFileDescriptor);
 				perror("Connection() : bind()");
 				continue;
 			}
@@ -158,7 +149,7 @@ int Connection(const char *hostname, const char *service /* Port number */, int 
 
 // Accept all incoming TCP connections and return a file descriptor
 // used to communicate with the client.
-int Accept(int iListenSocketFileDescriptor, struct Address *address)
+int socket_EXPORT Accept(int iListenSocketFileDescriptor, struct Address *address)
 {
 	int connfd;
 	socklen_t client_len = sizeof(address->m_sAddress);
@@ -186,7 +177,7 @@ int Accept(int iListenSocketFileDescriptor, struct Address *address)
 	return connfd;
 }
 
-void Connect(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize)
+void socket_EXPORT Connect(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize)
 {
 	if (connect(socketFileDescriptor, socketAddress, socketSize) < 0)
 	{
@@ -195,7 +186,7 @@ void Connect(int socketFileDescriptor, const struct sockaddr* socketAddress, soc
 	}
 }
 
-int Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptorSet, fd_set *writeFileDescriptorSet, fd_set *exceptFileDescriptorSet, struct timeval *timeout)
+int socket_EXPORT Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptorSet, fd_set *writeFileDescriptorSet, fd_set *exceptFileDescriptorSet, struct timeval *timeout)
 {
 	int n;
 	if ( (n = select(maxFileDescriptorsPlus1, readFileDescriptorSet, writeFileDescriptorSet, exceptFileDescriptorSet, timeout)) < 0)
@@ -206,10 +197,10 @@ int Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptorSet, fd_set *w
 	return(n);		/* can return 0 on timeout */
 }
 
-ssize_t Read(int fileDescriptor, void *buffer, size_t numberOfBytes)
+int socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes)
 {
-	ssize_t n;
-	if ( (n = read(fileDescriptor, buffer, numberOfBytes)) == -1)
+	int n;
+	if ((n = read(fileDescriptor, buffer, numberOfBytes)) == -1)
 	{
 		perror("Error in Read()");
 		exit(1); // Exit failure
@@ -217,7 +208,7 @@ ssize_t Read(int fileDescriptor, void *buffer, size_t numberOfBytes)
 	return(n);
 }
 
-void Write(int fileDescriptor, void *buffer, size_t numberOfBytes)
+void socket_EXPORT Write(int fileDescriptor, void *buffer, size_t numberOfBytes)
 {
 	if (write(fileDescriptor, buffer, numberOfBytes) != numberOfBytes)
 	{
@@ -235,12 +226,12 @@ void Shutdown(int fileDescriptor, int shutdownOption)
 	}
 }
 
-int Max(int x, int y)
+int socket_EXPORT Max(int x, int y)
 {
 	return ( x < y ) ? y : x;
 }
 
-void Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize)
+void socket_EXPORT Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize)
 {
 	if (bind(socketFileDescriptor, socketAddress, socketSize) < 0) {
 		perror("Error in Bind()");
@@ -248,7 +239,7 @@ void Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, sockle
 	}
 }
 
-void Listen(int socketFileDescriptor, int maxListenQSize)
+void socket_EXPORT Listen(int socketFileDescriptor, int maxListenQSize)
 {
 	if(listen(socketFileDescriptor, maxListenQSize) < 0)
 	{
@@ -257,7 +248,7 @@ void Listen(int socketFileDescriptor, int maxListenQSize)
 	}
 }
 
-void MultiplexIO(FILE* fp, int socketFileDescriptor)
+void socket_EXPORT MultiplexIO(FILE* fp, int socketFileDescriptor)
 {
 	int maxFileDescriptorsPlus1;
 	int stdinEOF = 0;
@@ -273,14 +264,14 @@ void MultiplexIO(FILE* fp, int socketFileDescriptor)
 		if( stdinEOF == 0)
 		{
 			// get the integer value for the stdin file descriptor and set this is the read set
-			FD_SET(fileno(fp), &readFileDescriptorSet);
+			FD_SET(_fileno(fp), &readFileDescriptorSet);
 		}
 
 		// set the socket file descriptor in the read set
 		FD_SET(socketFileDescriptor, &readFileDescriptorSet);
 
 		// find the highest index for the readset
-		maxFileDescriptorsPlus1 = Max(fileno(fp), socketFileDescriptor) + 1;
+		maxFileDescriptorsPlus1 = Max(_fileno(fp), socketFileDescriptor) + 1;
 
 		// call the select function to check each file descriptor for activity
 		Select(maxFileDescriptorsPlus1, &readFileDescriptorSet, NULL, NULL, NULL);
@@ -305,21 +296,21 @@ void MultiplexIO(FILE* fp, int socketFileDescriptor)
 			}
 
 			// write the results of reading the socket
-			Write(fileno(stdout), buffer, numberOfBytesReceived);
+			Write(_fileno(stdout), buffer, numberOfBytesReceived);
 		}
 
 		// input file descriptor is active
-		if( FD_ISSET(fileno(fp), &readFileDescriptorSet) )
+		if( FD_ISSET(_fileno(fp), &readFileDescriptorSet) )
 		{
-			numberOfBytesReceived = Read(fileno(fp), buffer, MAX_BUF_SIZE);
+			numberOfBytesReceived = Read(_fileno(fp), buffer, MAX_BUF_SIZE);
 
 			// if the client is terminated the socket is shutdown
 			if( numberOfBytesReceived == 0 )
 			{
 				//printf("Client has terminated the connection");
 				stdinEOF = 1;
-				Shutdown(socketFileDescriptor, SHUT_WR);
-				FD_CLR(fileno(fp), &readFileDescriptorSet);
+				Shutdown(socketFileDescriptor, 1);
+				FD_CLR(_fileno(fp), &readFileDescriptorSet);
 				continue;
 			}
 
@@ -328,7 +319,7 @@ void MultiplexIO(FILE* fp, int socketFileDescriptor)
 	}
 }
 
-int Send(int socketFileDescriptor, char *message, size_t size, int flags)
+int socket_EXPORT Send(int socketFileDescriptor, char *message, size_t size, int flags)
 {
 	int numberOfBytesSent = send(socketFileDescriptor, message, size, flags);
 	if(numberOfBytesSent < 0)
@@ -339,7 +330,7 @@ int Send(int socketFileDescriptor, char *message, size_t size, int flags)
 	return numberOfBytesSent;
 }
 
-int SendTo(int socketFileDescriptor, char *message, size_t size, int flags, struct sockaddr *sender, socklen_t sendsize)
+int socket_EXPORT SendTo(int socketFileDescriptor, char *message, size_t size, int flags, struct sockaddr *sender, socklen_t sendsize)
 {
 	int numberOfBytesSent = sendto(socketFileDescriptor, message, size, flags, sender, sendsize);
 	if(numberOfBytesSent < 0)
@@ -350,7 +341,7 @@ int SendTo(int socketFileDescriptor, char *message, size_t size, int flags, stru
 	return numberOfBytesSent;
 }
 
-int Recv(int socketFileDescriptor, char *message, size_t size, int flags)
+int socket_EXPORT Recv(int socketFileDescriptor, char *message, size_t size, int flags)
 {
 	int numberOfBytesReceived = recv(socketFileDescriptor, message, size, flags);
 	if(numberOfBytesReceived < 0)
@@ -361,7 +352,7 @@ int Recv(int socketFileDescriptor, char *message, size_t size, int flags)
 	return numberOfBytesReceived;
 }
 
-int ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int flags , struct sockaddr *sender, socklen_t *sendsize)
+int socket_EXPORT ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int flags , struct sockaddr *sender, socklen_t *sendsize)
 {
 	int numberOfBytesReceived = recvfrom(socketFileDescriptor, message, bufferSize, flags, sender, sendsize);
 	if(numberOfBytesReceived < 0)
@@ -372,8 +363,16 @@ int ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int fla
 	return numberOfBytesReceived;
 }
 
-int SetNonBlocking(int socketFileDescriptor)
+int socket_EXPORT SetNonBlocking(int socketFileDescriptor)
 {
+#ifdef _WIN32
+	unsigned long on = 1;
+	if (0 != ioctlsocket(socketFileDescriptor, FIONBIO, &on))
+	{
+		perror("Error in SetNonBlocking()");
+		exit(1); // Exit failure
+	}
+#else
 	// where socketfd is the socket you want to make non-blocking
 	int success = fcntl(socketFileDescriptor, F_SETFL, O_NONBLOCK);
 
@@ -382,5 +381,17 @@ int SetNonBlocking(int socketFileDescriptor)
 	  //exit(1); // Exit failure
 	}
 	return success;
+#endif
 }
+
+void socket_EXPORT Close(int socketFileDescriptor)
+{
+#ifdef _WIN32
+	closesocket(socketFileDescriptor);
+	WSACleanup();
+#else
+	close(socketFileDescriptor);
+#endif
+}
+
 
