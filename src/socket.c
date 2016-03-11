@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2016 David Morton
+// Copyright (c) 2016 David Morton
+// Use of this source code is governed by a license that can be
+// found in the LICENSE file.
+// https://github.com/damorton/libsocket.git
 
-https://github.com/damorton/libsocket.git
-*/
 #include "include/socket.h"
 #include <string.h> // memcpy()
 #include <fcntl.h>
