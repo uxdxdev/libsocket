@@ -1,40 +1,40 @@
-/*
+// Copyright (c) 2016 David Morton
+// Use of this source code is governed by a license that can be
+// found in the LICENSE file.
+// https://github.com/damorton/libsocket.git
 
-The MIT License (MIT)
+#ifndef INCLUDE_SOCKETS_H_
+#define INCLUDE_SOCKETS_H_
 
-Copyright (c) 2016 David Morton
+#include "socket_Export.h"
 
-https://github.com/damorton/libsocket.git
+#ifdef _WIN32
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+#include <winsock2.h>
+#include <ws2tcpip.h>
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+// Shutdown options
+#define SHUT_RD   SD_RECEIVE 
+#define SHUT_WR   SD_SEND 
+#define SHUT_RDWR SD_BOTH 
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+// Include the ws2_32.lib library when building for windows
+#pragma comment(lib,"ws2_32.lib")
 
-*/
-#ifndef INCLUDES_SOCKETS_H_
-#define INCLUDES_SOCKETS_H_
-
-#include <stdio.h> // perror()
-#include <sys/types.h>
+#else
+    
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <unistd.h> // close()
+
+#define _fileno fileno // _fileno used for windows build, needs to be redefined for UNIX systems
+
+#endif
+
+#include <stdio.h> // perror()
+#include <sys/types.h>
 #include <stdlib.h> // exit(),
-#include <unistd.h> // read(), write(), fork()
 #include <errno.h>
 
 // Max buffer size used for the read buffer of file descriptors
@@ -46,57 +46,84 @@ SOFTWARE.
 struct Address{
 	struct sockaddr_in m_sAddress; // Address assembled here
 	struct hostent * m_sHost_info; // Host information
-	struct sockaddr_storage sender;
-	socklen_t sendsize;
+	struct sockaddr_storage sender; // Sender storage information used for IPv6 addressing information
+	socklen_t sendsize; 
 };
 
+// Application type using the library
 enum eAppType{
 	TYPE_CLIENT,
 	TYPE_SERVER
 };
 
-// Socket() creates a socket based on the family, type,
-// and protocol parameters passed in. Errors are also handled
-// if the call to socket fails.
-int Socket(int family, int type, int protocol);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-// Populates an Address object with information relative to the ipAddress given as a parameter.
-// The port number and address family are also set in the Address object.
-void Address(int family, struct Address* address, char* ipAddress, int portNumber);
+// Socket() creates a socket based on the family, type, and protocol parameters passed in. 
+// Errors are also handled if the call to socket fails.
+int socket_EXPORT Socket(int family, int type, int protocol);
 
-// Facilitates IPv4 and IPv6 addressing compatibility and handles any errors that may occur.
-int Connection(const char *address, const char *service, int type /* Client or Server */, int protocol /* UDP or TCP */);
+// Facilitates IPv4 and IPv6 addressing compatibility and handles any errors that may occur. 
+// Provides a cross platform implementation for Windows and Linux OS. 
+// Depending on the type of application set in 'type' it will initiallize the socket to be a client or server socket
+// that uses UDP or TCP as the transport layer protocol
+int socket_EXPORT Connection(const char *address, const char *service, int type /* Client or Server */, int protocol /* UDP or TCP */);
 
 // Accept incoming client connections
-int Accept(int iListenSocketFileDescriptor, struct Address *address);
+int socket_EXPORT Accept(int iListenSocketFileDescriptor, struct Address *address);
 
 // Attempts to connect to the peer address, on success will write to the socket file descriptor passed
 // in as a parameter. Connect will also handle any errors that occur during the connection attempt.
-void Connect(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize);
+void socket_EXPORT Connect(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize);
 
 // Select wraps the select function call and handles any errors that may occur.
 // The Select wrapper function needs the max number of file descriptors,
 // the read set of descriptors, the write set, and the time interval to wait before
 // returning from the function. Select will multiplex I/O from many s
-int Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptorSet, fd_set *writeFileDescriptorSet, fd_set *exceptFileDescriptorSet, struct timeval *timeout);
+int socket_EXPORT Select(int maxFileDescriptorsPlus1, fd_set *readFileDescriptorSet, fd_set *writeFileDescriptorSet, fd_set *exceptFileDescriptorSet, struct timeval *timeout);
 
-// Read
-ssize_t Read(int fileDescriptor, void *buffer, size_t numberOfBytes);
-void Write(int fileDescriptor, void *buffer, size_t numberOfBytes);
-void Shutdown(int fileDescriptor, int shutdownOption);
-int Max(int x, int y);
-void Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize);
-void Listen(int socketFileDescriptor, int maxListenQSize);
-void MultiplexIO(FILE* fp, int socketFileDescriptor);
+// Read data from the file descriptor and store in the buffer
+int socket_EXPORT Read(int fileDescriptor, void *buffer, size_t numberOfBytes);
 
-int Send(int socketFileDescriptor, char *message, size_t size, int flags);
+// Write data stored in the buffer to the file descriptor
+void socket_EXPORT Write(int fileDescriptor, void *buffer, size_t numberOfBytes);
 
-int SendTo(int socketFileDescriptor, char *message, size_t size, int flags, struct sockaddr *sender, socklen_t sendsize);
+// Shutdown the socket using the shutdown option defines
+void socket_EXPORT Shutdown(int fileDescriptor, int shutdownOption);
 
-int Recv(int socketFileDescriptor, char *message, size_t size, int flags);
+// Utility function to find the max of two numbers
+int socket_EXPORT Max(int x, int y);
 
-int ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int flags , struct sockaddr *sender, socklen_t *sendsize);
+// Bind a socket to an address
+void socket_EXPORT Bind(int socketFileDescriptor, const struct sockaddr* socketAddress, socklen_t socketSize);
 
-int SetNonBlocking(int socketFileDescriptor);
+// Used by a server application to listen for incoming client connections
+void socket_EXPORT Listen(int socketFileDescriptor, int maxListenQSize);
 
+// Use the select() sockets function to multiplex data from multiple file descriptors fp, and socketFileDescriptor
+void socket_EXPORT MultiplexIO(FILE* fp, int socketFileDescriptor);
+
+// Transmit the data stored in the char array 'message' on the socket file descriptor
+int socket_EXPORT Send(int socketFileDescriptor, char *message, size_t size, int flags);
+
+// Used with UDP to fully address packets and send them using the socket file descriptor. 
+// Message store in the char array 'message' is send to 'sender' address
+int  socket_EXPORT SendTo(int socketFileDescriptor, char *message, size_t size, int flags, struct sockaddr *sender, socklen_t sendsize);
+
+// Read data from the socket file descriptor and store in the char array 'message'
+int socket_EXPORT Recv(int socketFileDescriptor, char *message, size_t size, int flags);
+
+// Receive a fully addressed packet from 'sender' and store the data in 'message'
+int socket_EXPORT ReceiveFrom(int socketFileDescriptor, char *message, int bufferSize, int flags, struct sockaddr *sender, socklen_t *sendsize);
+
+// Set the socket file descriptor to non blocking, provides a cross platform implementation for Windows and Linux OS
+int socket_EXPORT SetNonBlocking(int socketFileDescriptor);
+
+// Close a socket file descriptor, provides a cross platform implementation for Windows and Linux OS
+void socket_EXPORT Close(int socketFileDescriptor);
+
+#ifdef __cplusplus
+}
+#endif
 #endif /* INCLUDES_SOCKETS_H_ */

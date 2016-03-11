@@ -2,20 +2,35 @@
 
 Libsocket is a wrapper library around BSD Sockets allowing simple socket creation, connections, and message passing between peers. 
 
-## Build
-
-```
-$ cmake .
-$ make
-```
-## Instructions
+## Ubuntu
 - Download the repo
 - Extract to your third party library folder
 - `cd path/to/libsocket-folder`
 - Build
-- Link against the `libsocket` dynamic library in the `lib/` folder. 
+```
+$ cmake .
+$ make
+```
 
-To use the API don't forget to include the header file `include/socket.h`.
+Libraries built into `lib\` directory
+
+## Windows
+- Download the repo
+- Extract to your third party library folder
+- `cd path/to/libsocket-folder`
+- Build
+```
+$ cmake .
+$ make
+```
+- Open `.sln` in Visual Studio 2013
+- Build solution
+
+Libraries built into `lib\` directory
+
+## Dependencies
+
+- cmake   https://cmake.org/
 
 # Use cases
 

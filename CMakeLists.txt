@@ -25,16 +25,38 @@
 # SOFTWARE.
 #
 # */
-cmake_policy(SET CMP0017 NEW)
 cmake_minimum_required(VERSION 2.8)
 project(libsocket)
+include (GenerateExportHeader)
 
+include_directories(
+	${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 set(SOURCES src/socket.c)
+
+if(WIN32)
+  set(CMAKE_C_FLAGS "/ZW")
+endif()
+
+include_directories(
+	${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 add_library(socket SHARED ${SOURCES})
 
+GENERATE_EXPORT_HEADER(socket
+             BASE_NAME socket
+             EXPORT_MACRO_NAME socket_EXPORT
+             EXPORT_FILE_NAME ${CMAKE_CURRENT_SOURCE_DIR}/include/socket_Export.h
+)
+
+if(WIN32)
+  target_link_libraries(socket wsock32 ws2_32)
+endif()
+
 set_target_properties(socket
     PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib"   
+	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib" 
 )
