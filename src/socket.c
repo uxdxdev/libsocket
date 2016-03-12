@@ -19,8 +19,15 @@ int socket_EXPORT Socket(int family, int type, int protocol)
 	int enable = 1;
 	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (void*)&enable, sizeof(enable)) < 0)
 	{
-    	perror("setsockopt(SO_REUSEADDR) failed");
+		perror("setsockopt(SO_REUSEADDR) failed");
 	}
+
+#ifdef SO_REUSEPORT
+	if (setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, (void*)&enable, sizeof(enable)) < 0)
+	{
+		perror("setsockopt(SO_REUSEPORT) failed");
+	}
+#endif
 	return sock;
 }
 
