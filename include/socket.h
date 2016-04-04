@@ -6,10 +6,8 @@
 #ifndef INCLUDE_SOCKETS_H_
 #define INCLUDE_SOCKETS_H_
 
-#include "socket_Export.h"
-
 #ifdef _WIN32
-
+#include "windows/socket_Export.h"
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
@@ -23,6 +21,7 @@
 
 #else
     
+#include "linux/socket_Export.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
