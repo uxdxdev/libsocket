@@ -26,4 +26,3 @@ ZERO_CHECK.vcxproj.user
 socket.vcxproj.user
 *.opensdf
 .vs
-socket_Export.h
