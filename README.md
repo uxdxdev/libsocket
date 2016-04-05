@@ -6,7 +6,7 @@ Libsocket is a wrapper library around BSD Sockets allowing simple socket creatio
 - Download the repo
 - Extract to your third party library folder `\external\`
 - `cd external\libsocket-master`
-- Run ``build-linux.sh`
+- Run `build-linux.sh`
 
 Libraries built into `lib\` directory
 
@@ -14,7 +14,7 @@ Libraries built into `lib\` directory
 - Download the repo
 - Extract to your third party library folder `\external\`
 - `cd external\libsocket-master`
-- Run ``build-win32.sh`
+- Run `build-win32.sh`
 - Open `libsocket.sln` in Visual Studio
 - Build solution
 
