@@ -1,7 +1,6 @@
 // Copyright (c) 2016 David Morton
 // Use of this source code is governed by a license that can be
 // found in the LICENSE file.
-// https://github.com/damorton/libsocket.git
 
 #ifndef INCLUDE_SOCKETS_H_
 #define INCLUDE_SOCKETS_H_

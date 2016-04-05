@@ -2,40 +2,32 @@
 
 Libsocket is a wrapper library around BSD Sockets allowing simple socket creation, connections, and message passing between peers. 
 
-## Ubuntu
+## Build Instructions Linux
 - Download the repo
-- Extract to your third party library folder
-- `cd path/to/libsocket-folder`
-- Build
-```
-$ cmake .
-$ make
-```
+- Extract to your third party library folder `\external\`
+- `cd external\libsocket-master`
+- Run ``build-linux.sh`
 
 Libraries built into `lib\` directory
 
-## Windows
+## Build Instructions Win32
 - Download the repo
-- Extract to your third party library folder
-- `cd path/to/libsocket-folder`
-- Build
-```
-$ cmake .
-$ make
-```
-- Open `.sln` in Visual Studio 2013
+- Extract to your third party library folder `\external\`
+- `cd external\libsocket-master`
+- Run ``build-win32.sh`
+- Open `libsocket.sln` in Visual Studio
 - Build solution
 
-Libraries built into `lib\` directory
+Libraries built into `lib\` directory. The same process applies for other versions of Windows, use the appropriate build script to create the VS files. Run `clean.sh` before each new build.
+
+## Build Instructions Android
+- Download the repo
+- Extract to your third party library folder `\external\`
+- Update your projects `Android.mk` file to include the `socket.c`
+- Build using `NDK`
+
+There are pre-built libraries in the `libs\android` directory
 
 ## Dependencies
 
-- cmake   https://cmake.org/
-
-# Use cases
-
-Libsocket is currently being used in the following projects:
-
-- libhangman  https://github.com/damorton/libhangman.git
-- ngproject   https://github.com/damorton/ngproject.git
-- libraig        https://github.com/damorton/libraig.git
+- CMake   https://cmake.org/
